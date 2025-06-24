@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="16dp"
+    android:layout_marginTop="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginBottom="16dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Agendar Cita"
+        android:layout_marginBottom="11dp"
+        android:textAlignment="center"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/tvdescrip_agende"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="13dp"
+        android:layout_marginBottom="35dp"
+        android:text="Agende su cita con su Médico"
+        android:textAlignment="center"
+        android:textSize="16sp" />
+
+    <Spinner
+        android:id="@+id/spSeleccionarMedico"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="25dp"
+        android:scrollbarSize="6dp" />
+
+    <EditText
+        android:id="@+id/etMotivoConsulta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="25dp"
+        android:ems="10"
+        android:hint="Motivo de Consulta"
+        android:inputType="text"
+        android:minHeight="48dp" />
+
+    <EditText
+        android:id="@+id/etdFecha"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="date"
+        android:layout_marginBottom="25dp"
+        android:hint="Seleccione la fecha" />
+
+    <EditText
+        android:id="@+id/ettHora"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="time"
+        android:layout_marginBottom="25dp"
+        android:hint="Seleccione la hora" />
+
+    <Button
+        android:id="@+id/btnAgenderCita"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Agendar"
+        android:textSize="15sp" />
+
+
+</LinearLayout>

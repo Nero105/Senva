@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFF"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:id="@+id/linearimagen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imglogobienvenida"
+            android:layout_width="275dp"
+            android:layout_height="275dp"
+            app:srcCompat="@drawable/logo" />
+
+        <TextView
+            android:id="@+id/tvbienvenido"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Bienvenido"
+            android:textAlignment="center"
+            android:textColor="#2c7428"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        app:layout_constraintVertical_bias="0.1"
+        android:id="@+id/linearslayer01"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/rounded_background"
+        android:orientation="horizontal"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearimagen">
+
+        <LinearLayout
+            android:id="@+id/lineartvs"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_text1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:paddingTop="10dp"
+                android:text="Agende una cita"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tv_text2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:paddingBottom="5dp"
+                android:text="con su medico"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imgcalendario"
+            android:layout_height="70dp"
+            android:layout_width="70dp"
+            android:textAlignment="center"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/sliderpag1" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearcuentabotones"
+        app:layout_constraintVertical_bias="0.2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rounder_backgroundbotton"
+        android:orientation="vertical"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearslayer01"
+        >
+
+
+        <Button
+            android:id="@+id/btncrearcuenta"
+            android:layout_gravity="center"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:backgroundTint="#7aa559"
+            android:layout_marginBottom="15dp"
+            android:paddingTop="15dp"
+            android:textColor="@color/white"
+            android:paddingBottom="15dp"
+            android:textSize="17sp"
+            android:text="Crear una Cuenta" />
+
+        <Button
+            android:id="@+id/btningresargoogle"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:backgroundTint="#f2f2f2"
+            android:drawableLeft="@drawable/iconitodegooglesito"
+            android:drawablePadding="70dp"
+            android:text="Ingresar con Google"
+            android:textColor="@color/black" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        app:layout_constraintVertical_bias="0.1"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/linearcuentabotones"
+
+        tools:layout_editor_absoluteX="30dp">
+
+        <TextView
+            android:id="@+id/tvtienescuenta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:text="¿Ya tienes una cuenta?" />
+
+        <TextView
+            android:id="@+id/tvbieniniciarsesion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="#65a55f"
+            android:textStyle="bold"
+            android:layout_marginLeft="5dp"
+            android:text="Iniciar sesion" />
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,9 @@
+    <resources>
+        <string name="app_name">Senva</string>
+        <string-array name="documentos">
+            <item>Seleccione</item>
+            <item>Dni</item>
+            <item>Carnet de extranjeria</item>
+            <item>Pasaporte</item>
+        </string-array>
+    </resources>

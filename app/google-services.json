@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "931557594634",
+    "project_id": "senva-a6647",
+    "storage_bucket": "senva-a6647.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:931557594634:android:9f49307a52d9d44c2a71f3",
+        "android_client_info": {
+          "package_name": "com.example.senva"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhZCX1o3xNG4mEbH2te3sSw8PEgefZio0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
