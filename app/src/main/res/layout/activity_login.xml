@@ -1,216 +1,253 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/LinearLogin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:gravity="top|center_horizontal"
-    android:orientation="vertical">
+    android:background="@color/white">
 
     <LinearLayout
-        android:id="@+id/Linearbienvenida"
+        android:id="@+id/LinearTodo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="45dp"
-        android:orientation="vertical"
-        android:padding="30dp">
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:gravity="top|center_horizontal"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvIniciarSesion"
+        <LinearLayout
+            android:id="@+id/Linearbienvenida"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="45dp"
+            android:orientation="vertical"
+            android:padding="30dp">
+
+            <TextView
+                android:id="@+id/tvIniciarSesion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="10dp"
+                android:text="Inicie Sesion"
+                android:textAlignment="center"
+                android:textColor="#2c7428"
+                android:textSize="34sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ingresa para gestion"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="35dp"
+                android:text="sus citas en este hospital"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/LinearLayoutText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="10dp"
-            android:text="Inicie Sesion"
-            android:textAlignment="center"
-            android:textColor= "#2c7428"
-            android:textSize="34sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Ingresa para gestion"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="18sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="35dp"
-            android:text="sus citas en este hospital"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="18sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/LinearLayoutText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/tvnocorreo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Correo Electronico"
-            android:layout_marginLeft="10dp"
-            android:textSize="15sp"
-            android:layout_marginBottom="5dp"
-            android:labelFor="@+id/txtlogincorreo"
-            />
-
-        <EditText
-            android:id="@+id/txtlogincorreo"
-            android:layout_width="350dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="27dp"
-            android:background="@drawable/rounded_backgroundgris"
-            android:ems="10"
-            android:inputType="textEmailAddress"
-            android:minHeight="48dp"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:paddingTop="12.5dp"
-            android:paddingBottom="12.5dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
-
-            />
-
-        <TextView
-            android:id="@+id/tvnopassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Contrasena"
-            android:layout_marginLeft="10dp"
-            android:textSize="15sp"
-            android:layout_marginBottom="5dp"
-            android:labelFor="@+id/txtloginpassword"
-            />
-
-        <EditText
-            android:id="@+id/txtloginpassword"
-            android:layout_width="350dp"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPassword"
-            android:paddingLeft="15dp"
-            android:background="@drawable/rounded_backgroundgris"
-            android:paddingTop="12.5dp"
-            android:paddingRight="15dp"
-            android:paddingBottom="12.5dp"
-            android:textColor="@color/black"
-            android:textColorHint="#A9A5A5" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/LinearButtoms"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <Button
-            android:id="@+id/btnIngresar"
-            android:layout_width="320dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:backgroundTint="#7aa559"
-            android:paddingTop="15dp"
-            android:paddingBottom="15dp"
-            android:text="Ingresar"
-            android:textColor="@color/white"
-            android:textSize="20sp" />
-
-        <Button
-            android:id="@+id/btnIngresarGoogle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp"
-            android:layout_marginBottom="50dp"
-            android:textStyle="bold"
-            android:textSize="15sp"
-            android:backgroundTint="@color/gris"
-            android:drawableLeft="@drawable/iconitodegooglesito"
-            android:paddingTop="15dp"
-            android:paddingBottom="15dp"
-            android:text="Ingresar con Google"
-
-            android:textColor="@color/black" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/Linearregistro"
-        android:layout_width="370dp"
-        android:layout_height="250dp"
-        android:background="@drawable/rounder_backgroundbotton"
-        android:orientation="vertical">
-
-
-        <LinearLayout
-            android:id="@+id/Linearpreguntaconlinkregister"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:layout_marginBottom="5dp"
-            android:orientation="horizontal">
+            android:layout_marginBottom="30dp"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
+                android:id="@+id/tvnocorreo"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="52dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="5dp"
+                android:labelFor="@+id/txtlogincorreo"
+                android:text="Correo Electronico"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/txtlogincorreo"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="27dp"
+                android:background="@drawable/rounded_backgroundgris"
+                android:ems="10"
+                android:inputType="textEmailAddress"
+                android:minHeight="48dp"
+                android:paddingLeft="15dp"
+                android:paddingTop="12.5dp"
+                android:paddingRight="15dp"
+                android:paddingBottom="12.5dp"
                 android:textColor="@color/black"
-                android:layout_marginRight="5dp"
-                android:text="¿Aún no te haz registrado?"
-                android:textStyle="bold" />
+                android:textColorHint="@color/black"
+
+                />
 
             <TextView
-                android:id="@+id/tvcrearcuenta"
-                android:layout_width="wrap_content"
+                android:id="@+id/tvnopassword"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="5dp"
+                android:labelFor="@+id/txtloginpassword"
+                android:text="Contrasena"
+                android:textSize="15sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="Crear cuenta"
-                android:textColor="#65a55f"
+                android:background="@drawable/rounded_backgroundgris"
+                android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/txtloginpassword"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:inputType="textPassword"
+                android:textColor="#545454"
+                android:padding="12dp"
+                android:maxLines="1"
+                android:singleLine="true" />
+
+                <ImageView
+                    android:id="@+id/iv_eye_closeL"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="12dp"
+                    android:src="@drawable/ic_eye_close"
+                    android:contentDescription="Mostrar contraseña" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/LinearButtoms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnIngresar"
+                android:layout_width="320dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:backgroundTint="#7aa559"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:text="Ingresar"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/btnIngresarGoogle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginBottom="50dp"
+                android:backgroundTint="@color/gris"
+                android:drawableLeft="@drawable/iconitodegooglesito"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:text="Ingresar con Google"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+
                 android:textStyle="bold" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal">
+            android:id="@+id/Linearregistro"
+            android:layout_width="370dp"
+            android:layout_height="250dp"
+            android:background="@drawable/rounder_backgroundbotton"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/Linearpreguntaconlinkregister"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:paddingLeft="40dp"
-                android:textColor="@color/black"
-                android:text="¿Olvidaste tu contrasena?" />
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:paddingLeft="52dp"
+                    android:text="¿Aún no te haz registrado?"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvcrearcuenta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:text="Crear cuenta"
+                    android:textColor="#65a55f"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textStyle="bold"
-                android:textColor="#65a55f"
-                android:layout_marginLeft="5dp"
-                android:text="Recuperala aqui" />
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="40dp"
+                    android:text="¿Olvidaste tu contrasena?"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:text="Recuperala aqui"
+                    android:textColor="#65a55f"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+    <RelativeLayout
+        android:id="@+id/loading_layoutL"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#66000000"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        >
+        <ImageView
+            android:id="@+id/iv_loadingL"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:visibility="visible"
+            />
+    </RelativeLayout>
+</FrameLayout>

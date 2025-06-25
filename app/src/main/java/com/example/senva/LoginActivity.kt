@@ -5,11 +5,14 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.text.InputType
 import android.util.Patterns
 import android.view.View
 import android.view.WindowInsetsController
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -17,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : AppCompatActivity() {
@@ -31,6 +35,15 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var btn_ingresar: Button
     private lateinit var tv_extracorreo: TextView
     private lateinit var tv_crearcuenta: TextView
+
+    private var passwordVisible = false
+
+    // Caja de loading
+    private lateinit var loading_layout_L: RelativeLayout
+    // Loading
+    private lateinit var iv_loading: ImageView
+    // Eye Password
+    private lateinit var iv_eye_closed: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,14 +80,68 @@ class LoginActivity : AppCompatActivity() {
         txt_loginpassword = findViewById<EditText>(R.id.txtloginpassword)
         btn_ingresar = findViewById<Button>(R.id.btnIngresar)
         tv_crearcuenta = findViewById<TextView>(R.id.tvcrearcuenta)
+        // Id de caja loading
+        loading_layout_L = findViewById<RelativeLayout>(R.id.loading_layoutL)
+        // Eye Password
+        iv_eye_closed = findViewById<ImageView>(R.id.iv_eye_closeL)
+        // Loading
+        iv_loading = findViewById<ImageView>(R.id.iv_loadingL)
+
+        iv_eye_closed.setOnClickListener {
+            passwordVisible = !passwordVisible
+
+            if (passwordVisible){
+                txt_loginpassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                iv_eye_closed.setImageResource(R.drawable.ic_eye)
+            } else {
+                txt_loginpassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                iv_eye_closed.setImageResource(R.drawable.ic_eye_close)
+            }
+            txt_loginpassword.setSelection(txt_loginpassword.text.length)
+        }
 
         btn_ingresar.setOnClickListener {
+
+
+
+            // 24062025 - EEP - Creando una array de forma local
+            val campos = listOf(
+                txt_logincorreo.text.toString(),
+                txt_loginpassword.text.toString()
+            )
+
+            // 24062025 - EEP - Creando una variable para limpiar espacios
+            val camposvacio = campos.any(){it.trim().isEmpty()}
+
+
+            if (camposvacio){
+                Toast.makeText(this, "Por favor no deje espacios vacios!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            fun expresionregular(texto: String): Boolean{
+                val regex = Regex("^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$")
+                return regex.matches(texto)
+            }
+
+
+
             // 19062025 - EEP - Verificacion de contraseña
             if (txt_loginpassword.text.toString() != ""){
+                var cajaCarga = loading_layout_L
+                var carga = iv_loading
                 // 19062025 - EEP - Verificacion de formato de Correo con "EMAIL_ADDRESS"
                 if (txt_logincorreo.text.toString().isNotEmpty() && Patterns.EMAIL_ADDRESS.matcher(txt_logincorreo.text.toString()).matches()){
+
+                    cajaCarga.visibility = View.VISIBLE
+                    Glide.with(this)
+                        .asGif()
+                        .load(R.raw.loading)
+                        .into(carga)
                     login_firebase(txt_logincorreo.text.toString(),txt_loginpassword.text.toString())
-                }else{
+                }
+                else{
+
                     Toast.makeText(applicationContext,"Correo o Contraseña incorrecta", Toast.LENGTH_LONG).show()
                 }
             }else{
@@ -92,13 +159,14 @@ class LoginActivity : AppCompatActivity() {
         FirebaseAuth.getInstance().signInWithEmailAndPassword(xemail, xpassword)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-
+                    loading_layout_L.visibility = View.GONE
                     guardar_sesion(task.result.user?.email.toString())
                     var intent = Intent(this, HomeActivity::class.java)
                     intent.putExtra("Correo",task.result.user?.email)
                     startActivity(intent)
                     finish()
                 } else {
+                    loading_layout_L.visibility = View.GONE
                     Toast.makeText(applicationContext,"Correo o Contrasena Incorrecta", Toast.LENGTH_LONG).show()
                 }
             }
