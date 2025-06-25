@@ -50,7 +50,7 @@ class LoginActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_login)
 
-        verificar_sesion_abierta()
+
         //20062025 - EEP - Hacer que el bar status resalte
         WindowCompat.setDecorFitsSystemWindows(window, false)
         window.statusBarColor = getColor(R.color.white)
@@ -73,6 +73,7 @@ class LoginActivity : AppCompatActivity() {
             insets
         }
         AgregarReferencia()
+        verificar_sesion_abierta()
     }
 
     fun AgregarReferencia(){
@@ -119,13 +120,6 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            fun expresionregular(texto: String): Boolean{
-                val regex = Regex("^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$")
-                return regex.matches(texto)
-            }
-
-
-
             // 19062025 - EEP - Verificacion de contraseña
             if (txt_loginpassword.text.toString() != ""){
                 var cajaCarga = loading_layout_L
@@ -141,7 +135,6 @@ class LoginActivity : AppCompatActivity() {
                     login_firebase(txt_logincorreo.text.toString(),txt_loginpassword.text.toString())
                 }
                 else{
-
                     Toast.makeText(applicationContext,"Correo o Contraseña incorrecta", Toast.LENGTH_LONG).show()
                 }
             }else{
@@ -174,14 +167,28 @@ class LoginActivity : AppCompatActivity() {
 
     fun verificar_sesion_abierta(){
         var sesion_abierta: SharedPreferences = getSharedPreferences(Global.preferencias_compartidas, MODE_PRIVATE)
-
         var correo = sesion_abierta.getString("Correo",null)
 
+
         if (correo != null){
-            val intent = Intent(this, HomeActivity::class.java)
-            intent.putExtra("Correo",correo)
-            startActivity(intent)
-            finish()
+            var cajaCarga = loading_layout_L
+            var carga = iv_loading
+
+            cajaCarga.visibility = View.VISIBLE
+            Glide.with(this)
+                .asGif()
+                .load(R.raw.loading)
+                .into(carga)
+
+            // Falsa carga
+            window.decorView.postDelayed({
+                val intent = Intent(this, HomeActivity::class.java)
+                intent.putExtra("Correo",correo)
+                startActivity(intent)
+                finish()
+            },1500)
+
+
         }
     }
 
