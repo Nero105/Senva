@@ -54,4 +54,8 @@ dependencies {
     // Declare the dependency for the Cloud Firestore library
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation("com.google.firebase:firebase-firestore")
+    // Dependencia de Glide
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
+    // annotationProcessor: permite generar automáticamente código interno que Glide necesita.
+    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
 }

@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/LinearRegister"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical">
+    android:background="@color/white">
 
     <LinearLayout
         android:id="@+id/Lineartitulo"
@@ -95,6 +94,7 @@
                     android:layout_marginRight="40dp"
                     android:singleLine="true"
                     android:maxLines="1"
+                    android:inputType="textCapWords"
                     />
 
                 <EditText
@@ -110,6 +110,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:maxLines="1"
+                    android:inputType="textCapWords"
                     android:singleLine="true"
                     />
             </LinearLayout>
@@ -175,6 +176,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="40dp"
                     android:maxLines="1"
+                    android:inputType="textCapWords"
                     android:singleLine="true"
                     />
 
@@ -191,6 +193,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:maxLines="1"
+                    android:inputType="textCapWords"
                     android:singleLine="true"
                     />
             </LinearLayout>
@@ -345,35 +348,39 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginBottom="5dp"
                 android:textStyle="bold"
-
                 android:textColor="#a6a6a6"
                 android:text="Contrasena"
                 android:labelFor="@+id/txtcrearpassword"
                 />
 
-            <EditText
-                android:id="@+id/txtcrearpassword"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:inputType="textPassword"
-                android:layout_marginRight="10dp"
-                android:textColor="#545454"
-                android:paddingLeft="15dp"
-                android:background="@drawable/rounded_backgroundregister"
-                android:paddingTop="12dp"
-                android:paddingBottom="12dp"
-                android:maxLines="1"
-                android:singleLine="true"
-                />
-
-            <ImageView
-                android:id="@+id/imageView2"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:srcCompat="@drawable/ic_eye_close" />
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/rounded_backgroundregister"
+                android:orientation="horizontal">
 
+                <EditText
+                    android:id="@+id/txtcrearpassword"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:inputType="textPassword"
+                    android:textColor="#545454"
+                    android:padding="12dp"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+
+                <ImageView
+                    android:id="@+id/iv_eye_close"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="12dp"
+                    android:src="@drawable/ic_eye_close"
+                    android:contentDescription="Mostrar contraseña" />
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -499,4 +506,24 @@
     -->
         </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/loading_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#66000000"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        >
+        <ImageView
+            android:id="@+id/iv_loading"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:visibility="visible"
+            />
+    </RelativeLayout>
+
+</FrameLayout>

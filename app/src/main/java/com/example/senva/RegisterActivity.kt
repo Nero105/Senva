@@ -3,6 +3,7 @@ package com.example.senva
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.text.InputType
 import android.util.Patterns
 import android.view.View
 import android.view.WindowInsetsController
@@ -10,6 +11,8 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
@@ -17,6 +20,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.transition.Visibility
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 // firestore
 import com.google.firebase.firestore.FirebaseFirestore
@@ -34,10 +39,22 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var txt_segundonombre: EditText
     private lateinit var txt_primerapellido: EditText
     private lateinit var txt_segundoapellido: EditText
+    private lateinit var txt_telefono: EditText
 
     // Declaracion para el spinner
     private lateinit var sp_documentos: Spinner
     private lateinit var firestore: FirebaseFirestore
+
+    // pantalla de carga
+    private lateinit var iv_loading: ImageView
+
+    // Layout carga
+    private lateinit var loadin_layout: RelativeLayout
+
+    // Mostrar password
+    private lateinit var ic_eye_close: ImageView
+    private var passwordVisible = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -75,6 +92,7 @@ class RegisterActivity : AppCompatActivity() {
         btn_register = findViewById<Button>(R.id.btnenviarregister)
         tv_iniciarsesion = findViewById<TextView>(R.id.tviniciarseionmedientotexto)
         txt_dni = findViewById<EditText>(R.id.txtdni)
+        txt_telefono = findViewById<EditText>(R.id.txttelefono)
 
         txt_primernombre = findViewById<EditText>(R.id.txtprimernombre)
         txt_segundonombre = findViewById<EditText>(R.id.txtsegundonombre)
@@ -83,6 +101,29 @@ class RegisterActivity : AppCompatActivity() {
 
         // Spinner
         sp_documentos = findViewById<Spinner>(R.id.spdocumentos)
+
+        // Gif
+        iv_loading = findViewById<ImageView>(R.id.iv_loading)
+
+        // Relative layout
+        loadin_layout = findViewById<RelativeLayout>(R.id.loading_layout)
+
+        // Password
+        ic_eye_close = findViewById<ImageView>(R.id.iv_eye_close)
+
+        ic_eye_close.setOnClickListener {
+            passwordVisible = !passwordVisible
+
+            if (passwordVisible){
+                txt_loginpassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                ic_eye_close.setImageResource(R.drawable.ic_eye)
+            } else {
+                txt_loginpassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                ic_eye_close.setImageResource(R.drawable.ic_eye_close)
+            }
+            txt_loginpassword.setSelection(txt_loginpassword.text.length)
+
+        }
 
         btn_register.setOnClickListener {
             val correo = txt_logincorreo.text.toString()
@@ -93,12 +134,88 @@ class RegisterActivity : AppCompatActivity() {
             val primerapellido = txt_primerapellido.text.toString()
             val segundoapellido = txt_segundoapellido.text.toString()
 
+            // 24062025 - EEP - Creando una array de forma local
+            val campos = listOf(
+                txt_primernombre.text.toString(),
+                txt_segundonombre.text.toString(),
+                txt_primerapellido.text.toString(),
+                txt_segundoapellido.text.toString()
+            )
+
+            // 24062025 - EEP - Creando una variable para limpiar espacios
+            val campovacio = campos.any(){it.trim().isEmpty()}
+
+            if (campovacio){
+                Toast.makeText(this, "Por favor no deje espacios vacios!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            fun expresionregular(texto: String): Boolean{
+                val regex = Regex("^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$")
+                return regex.matches(texto)
+            }
+
+            if (!expresionregular(primernombre.trim())){
+                Toast.makeText(this, "Por favor no introducir emojis ni caracteres especiales", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
+            if (!expresionregular(segundonombre.trim())){
+                Toast.makeText(this, "Por favor no introducir emojis ni caracteres especiales", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
+            if (!expresionregular(primerapellido.trim())){
+                Toast.makeText(this, "Por favor no introducir emojis ni caracteres especiales", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
+            if (!expresionregular(segundoapellido.trim())){
+                Toast.makeText(this, "Por favor no introducir emojis ni caracteres especiales", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
             if (correo.isEmpty() || password.isEmpty() || dni.isEmpty() || primernombre.isEmpty() ||
                 segundonombre.isEmpty() || primerapellido.isEmpty() || segundoapellido.isEmpty()) {
                 Toast.makeText(this, "Por favor rellena todos los campos", Toast.LENGTH_LONG).show()
-            } else if (!Patterns.EMAIL_ADDRESS.matcher(correo).matches()) {
+            } else if (!correo.endsWith("@gmail.com") || !Patterns.EMAIL_ADDRESS.matcher(correo).matches()){
+                Toast.makeText(this, "Por favor ingrese un gmail valido", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+            else if(primernombre.trim().length < 2) {
+                Toast.makeText(this, "El primer nombre debe tener al menos 2 caracteres", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            else if(segundonombre.trim().length < 2) {
+                Toast.makeText(this, "El segundo nombre debe tener al menos 2 caracteres", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            else if(primerapellido.trim().length < 2) {
+                Toast.makeText(this, "El Apellido debe tener al menos 2 caracteres", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            else if(segundoapellido.trim().length < 2) {
+                Toast.makeText(this, "El Apellido debe tener al menos 2 caracteres", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            else if(txt_telefono.text.toString().length < 9){
+                Toast.makeText(this, "Por favor ingrese 9 digitos", Toast.LENGTH_SHORT).show()
+            }
+            else if(txt_dni.text.toString().length < 8){
+                Toast.makeText(this, "Por favor ingrese 9 digitos", Toast.LENGTH_SHORT).show()
+            }
+            else if (password.length < 6){
+                Toast.makeText(this, "Por favor ingresar contrasena mayor a 6 digitos", Toast.LENGTH_LONG).show()
+            }
+            else if (!Patterns.EMAIL_ADDRESS.matcher(correo).matches()) {
                 Toast.makeText(this, "Formato de correo incorrecto", Toast.LENGTH_LONG).show()
             } else {
+                loadin_layout.visibility = View.VISIBLE
+                Glide.with(this)
+                    .asGif()
+                    .load(R.raw.loading)
+                    .into(iv_loading)
                 verificarDniYRegistrar(dni, correo, password)
             }
         }
@@ -128,11 +245,8 @@ class RegisterActivity : AppCompatActivity() {
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
-
         }
-
         firestore = FirebaseFirestore.getInstance()
-
     }
 
     fun verificarDniYRegistrar(dni: String, correo: String, password: String) {
@@ -141,6 +255,7 @@ class RegisterActivity : AppCompatActivity() {
             .get()
             .addOnSuccessListener { result ->
                 if (!result.isEmpty) {
+                    iv_loading.visibility = View.GONE
                     Toast.makeText(this, "El DNI ya está registrado", Toast.LENGTH_LONG).show()
                 } else {
                     // El DNI no existe aún, se puede registrar
@@ -172,6 +287,7 @@ class RegisterActivity : AppCompatActivity() {
                     intent.putExtra("Correo", correo)
                     startActivity(intent)
                     finish()
+                    loadin_layout.visibility = View.GONE
                     Toast.makeText(applicationContext,"Cuenta Creada", Toast.LENGTH_LONG).show()
                 } else {
                     Toast.makeText(applicationContext,"Contraseña corta o usuario ya existe", Toast.LENGTH_LONG).show()
@@ -202,6 +318,7 @@ class RegisterActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, "Datos registrados en Firestore", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener {
+                loadin_layout.visibility = View.GONE
                 Toast.makeText(applicationContext, "Error al registrar en Firestore", Toast.LENGTH_SHORT).show()
             }
     }
