@@ -2,6 +2,8 @@ package com.example.senva
 
 import android.content.Intent
 import android.content.SharedPreferences
+import android.credentials.ClearCredentialStateRequest
+import android.credentials.CredentialManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Patterns
@@ -16,6 +18,10 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.senva.LoginActivity.Global
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 class HomeActivity : AppCompatActivity() {
 
@@ -73,10 +79,11 @@ class HomeActivity : AppCompatActivity() {
 
     }
 
-    fun borrar_sesion(){
-        var borrar_sesion: SharedPreferences.Editor = getSharedPreferences(Global.preferencias_compartidas, MODE_PRIVATE).edit()
-        borrar_sesion.clear()
-        borrar_sesion.apply()
-    }
+    fun borrar_sesion() {
+        val borrarSesion = getSharedPreferences(Global.preferencias_compartidas, MODE_PRIVATE).edit()
+        borrarSesion.clear()
+        borrarSesion.apply()
 
+        Firebase.auth.signOut()
+    }
 }

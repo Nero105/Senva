@@ -20,8 +20,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.example.senva.MainActivity
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
 
@@ -33,7 +36,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var txt_logincorreo: EditText
     private lateinit var txt_loginpassword: EditText
     private lateinit var btn_ingresar: Button
-    private lateinit var tv_extracorreo: TextView
+    private lateinit var btn_IngresarGoogle: Button
     private lateinit var tv_crearcuenta: TextView
 
     private var passwordVisible = false
@@ -72,8 +75,8 @@ class LoginActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        AgregarReferencia()
         verificar_sesion_abierta()
+        AgregarReferencia()
     }
 
     fun AgregarReferencia(){
@@ -87,6 +90,10 @@ class LoginActivity : AppCompatActivity() {
         iv_eye_closed = findViewById<ImageView>(R.id.iv_eye_closeL)
         // Loading
         iv_loading = findViewById<ImageView>(R.id.iv_loadingL)
+        // Ingresar con Google
+        btn_IngresarGoogle = findViewById<Button>(R.id.btnIngresarGoogleL)
+
+
 
         iv_eye_closed.setOnClickListener {
             passwordVisible = !passwordVisible
@@ -102,8 +109,6 @@ class LoginActivity : AppCompatActivity() {
         }
 
         btn_ingresar.setOnClickListener {
-
-
 
             // 24062025 - EEP - Creando una array de forma local
             val campos = listOf(
@@ -145,6 +150,89 @@ class LoginActivity : AppCompatActivity() {
         tv_crearcuenta.setOnClickListener(){
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
+        }
+
+        btn_IngresarGoogle.setOnClickListener {
+            iniciarSesionConGoogle()
+        }
+
+    }
+
+    fun iniciarSesionConGoogle() {
+        val credentialManager = androidx.credentials.CredentialManager.create(this)
+
+        val signInWithGoogleOption = com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption.Builder(
+            getString(R.string.web_cliente)
+        ).build()
+
+        val request = androidx.credentials.GetCredentialRequest.Builder()
+            .addCredentialOption(signInWithGoogleOption)
+            .build()
+
+        lifecycleScope.launch {
+            try {
+                val result = credentialManager.getCredential(
+                    request = request,
+                    context = this@LoginActivity
+                )
+                handleSignIn(result)
+            } catch (e: androidx.credentials.exceptions.GetCredentialException) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun handleSignIn(result: androidx.credentials.GetCredentialResponse) {
+        val credential = result.credential
+
+        if (credential is androidx.credentials.CustomCredential &&
+            credential.type == com.google.android.libraries.identity.googleid.GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL
+        ) {
+            try {
+                val googleCredential = com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
+                    .createFrom(credential.data)
+
+                val firebaseCredential = com.google.firebase.auth.GoogleAuthProvider.getCredential(
+                    googleCredential.idToken, null
+                )
+
+                com.google.firebase.auth.FirebaseAuth.getInstance()
+                    .signInWithCredential(firebaseCredential)
+                    .addOnCompleteListener(this) { task ->
+                        if (task.isSuccessful) {
+                            val user = task.result.user
+                            val correo = user?.email ?: ""
+                            val nombre = user?.displayName ?: ""
+
+                            // Verifica si existe en Firestore
+                            val firestore = com.google.firebase.firestore.FirebaseFirestore.getInstance()
+                            firestore.collection("usuarios")
+                                .whereEqualTo("correo", correo)
+                                .get()
+                                .addOnSuccessListener { result ->
+                                    if (!result.isEmpty) {
+                                        // Ya está registrado
+                                        guardar_sesion(correo)
+                                        val intent = Intent(this, HomeActivity::class.java)
+                                        intent.putExtra("Correo", correo)
+                                        startActivity(intent)
+                                        finish()
+                                    } else {
+                                        // No está registrado → mandarlo al Register
+                                        val intent = Intent(this, RegisterActivity::class.java)
+                                        intent.putExtra("NOMBRE", nombre)
+                                        intent.putExtra("CORREO", correo)
+                                        intent.putExtra("GOOGLE", true)
+                                        startActivity(intent)
+                                        finish()
+                                    }
+                                }
+                        }
+                    }
+
+            } catch (e: com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException) {
+                e.printStackTrace()
+            }
         }
     }
 

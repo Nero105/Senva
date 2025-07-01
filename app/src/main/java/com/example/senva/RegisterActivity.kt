@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.InputType
+import android.util.Log
 import android.util.Patterns
 import android.view.View
 import android.view.WindowInsetsController
@@ -20,11 +21,23 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.credentials.CustomCredential
+import androidx.credentials.GetCredentialRequest
+import androidx.credentials.GetCredentialResponse
+import androidx.credentials.exceptions.GetCredentialException
+import androidx.lifecycle.lifecycleScope
+import androidx.credentials.CredentialManager
 import androidx.transition.Visibility
 import com.bumptech.glide.Glide
+import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
+import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 // firestore
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 
 class RegisterActivity : AppCompatActivity() {
@@ -45,6 +58,9 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var sp_documentos: Spinner
     private lateinit var firestore: FirebaseFirestore
 
+    // Crear cuenta con Google
+    private lateinit var btn_IngresarGoogle: Button
+
     // pantalla de carga
     private lateinit var iv_loading: ImageView
 
@@ -55,6 +71,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var ic_eye_close: ImageView
     private var passwordVisible = false
 
+    private var esCuentaGoogle: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -84,6 +101,25 @@ class RegisterActivity : AppCompatActivity() {
             insets
         }
         AgregarReferencia()
+
+        val correoGoogle = intent.getStringExtra("CORREO")
+        val nombreGoogle = intent.getStringExtra("NOMBRE")
+        esCuentaGoogle = intent.getBooleanExtra("GOOGLE", false)
+
+        if (esCuentaGoogle) {
+            txt_logincorreo.setText(correoGoogle)
+
+            val partes = nombreGoogle?.split(" ")
+            if (partes != null && partes.size >= 2) {
+                txt_primernombre.setText(partes[0])
+                txt_primerapellido.setText(partes[1])
+            } else if (partes != null && partes.isNotEmpty()) {
+                txt_primernombre.setText(partes[0])
+            }
+        }
+
+
+
     }
 
     fun AgregarReferencia() {
@@ -93,6 +129,9 @@ class RegisterActivity : AppCompatActivity() {
         tv_iniciarsesion = findViewById<TextView>(R.id.tviniciarseionmedientotexto)
         txt_dni = findViewById<EditText>(R.id.txtdni)
         txt_telefono = findViewById<EditText>(R.id.txttelefono)
+
+        // Google
+        btn_IngresarGoogle = findViewById<Button>(R.id.btnIngresarGoogle)
 
         txt_primernombre = findViewById<EditText>(R.id.txtprimernombre)
         txt_segundonombre = findViewById<EditText>(R.id.txtsegundonombre)
@@ -114,16 +153,19 @@ class RegisterActivity : AppCompatActivity() {
         ic_eye_close.setOnClickListener {
             passwordVisible = !passwordVisible
 
-            if (passwordVisible){
-                txt_loginpassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+            if (passwordVisible) {
+                txt_loginpassword.inputType =
+                    InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
                 ic_eye_close.setImageResource(R.drawable.ic_eye)
             } else {
-                txt_loginpassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                txt_loginpassword.inputType =
+                    InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
                 ic_eye_close.setImageResource(R.drawable.ic_eye_close)
             }
             txt_loginpassword.setSelection(txt_loginpassword.text.length)
 
         }
+
 
         btn_register.setOnClickListener {
             val correo = txt_logincorreo.text.toString()
@@ -143,72 +185,103 @@ class RegisterActivity : AppCompatActivity() {
             )
 
             // 24062025 - EEP - Creando una variable para limpiar espacios
-            val campovacio = campos.any(){it.trim().isEmpty()}
+            val campovacio = campos.any() { it.trim().isEmpty() }
 
-            if (campovacio){
-                Toast.makeText(this, "Por favor no deje espacios vacios!", Toast.LENGTH_SHORT).show()
+            if (campovacio) {
+                Toast.makeText(this, "Por favor no deje espacios vacios!", Toast.LENGTH_SHORT)
+                    .show()
                 return@setOnClickListener
             }
 
-            fun expresionregular(texto: String): Boolean{
+            fun expresionregular(texto: String): Boolean {
                 val regex = Regex("^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$")
                 return regex.matches(texto)
             }
 
-            if (!expresionregular(primernombre.trim())){
-                Toast.makeText(this, "Por favor no introducir emojis ni caracteres especiales", Toast.LENGTH_LONG).show()
+            if (!expresionregular(primernombre.trim())) {
+                Toast.makeText(
+                    this,
+                    "Por favor no introducir emojis ni caracteres especiales",
+                    Toast.LENGTH_LONG
+                ).show()
                 return@setOnClickListener
             }
 
-            if (!expresionregular(segundonombre.trim())){
-                Toast.makeText(this, "Por favor no introducir emojis ni caracteres especiales", Toast.LENGTH_LONG).show()
+            if (!expresionregular(segundonombre.trim())) {
+                Toast.makeText(
+                    this,
+                    "Por favor no introducir emojis ni caracteres especiales",
+                    Toast.LENGTH_LONG
+                ).show()
                 return@setOnClickListener
             }
 
-            if (!expresionregular(primerapellido.trim())){
-                Toast.makeText(this, "Por favor no introducir emojis ni caracteres especiales", Toast.LENGTH_LONG).show()
+            if (!expresionregular(primerapellido.trim())) {
+                Toast.makeText(
+                    this,
+                    "Por favor no introducir emojis ni caracteres especiales",
+                    Toast.LENGTH_LONG
+                ).show()
                 return@setOnClickListener
             }
 
-            if (!expresionregular(segundoapellido.trim())){
-                Toast.makeText(this, "Por favor no introducir emojis ni caracteres especiales", Toast.LENGTH_LONG).show()
+            if (!expresionregular(segundoapellido.trim())) {
+                Toast.makeText(
+                    this,
+                    "Por favor no introducir emojis ni caracteres especiales",
+                    Toast.LENGTH_LONG
+                ).show()
                 return@setOnClickListener
             }
 
             if (correo.isEmpty() || password.isEmpty() || dni.isEmpty() || primernombre.isEmpty() ||
-                segundonombre.isEmpty() || primerapellido.isEmpty() || segundoapellido.isEmpty()) {
+                segundonombre.isEmpty() || primerapellido.isEmpty() || segundoapellido.isEmpty()
+            ) {
                 Toast.makeText(this, "Por favor rellena todos los campos", Toast.LENGTH_LONG).show()
-            } else if (!correo.endsWith("@gmail.com") || !Patterns.EMAIL_ADDRESS.matcher(correo).matches()){
+            } else if (!correo.endsWith("@gmail.com") || !Patterns.EMAIL_ADDRESS.matcher(correo)
+                    .matches()
+            ) {
                 Toast.makeText(this, "Por favor ingrese un gmail valido", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
-            }
-            else if(primernombre.trim().length < 2) {
-                Toast.makeText(this, "El primer nombre debe tener al menos 2 caracteres", Toast.LENGTH_SHORT).show()
+            } else if (primernombre.trim().length < 2) {
+                Toast.makeText(
+                    this,
+                    "El primer nombre debe tener al menos 2 caracteres",
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
-            }
-            else if(segundonombre.trim().length < 2) {
-                Toast.makeText(this, "El segundo nombre debe tener al menos 2 caracteres", Toast.LENGTH_SHORT).show()
+            } else if (segundonombre.trim().length < 2) {
+                Toast.makeText(
+                    this,
+                    "El segundo nombre debe tener al menos 2 caracteres",
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
-            }
-            else if(primerapellido.trim().length < 2) {
-                Toast.makeText(this, "El Apellido debe tener al menos 2 caracteres", Toast.LENGTH_SHORT).show()
+            } else if (primerapellido.trim().length < 2) {
+                Toast.makeText(
+                    this,
+                    "El Apellido debe tener al menos 2 caracteres",
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
-            }
-            else if(segundoapellido.trim().length < 2) {
-                Toast.makeText(this, "El Apellido debe tener al menos 2 caracteres", Toast.LENGTH_SHORT).show()
+            } else if (segundoapellido.trim().length < 2) {
+                Toast.makeText(
+                    this,
+                    "El Apellido debe tener al menos 2 caracteres",
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
-            }
-
-            else if(txt_telefono.text.toString().length < 9){
+            } else if (txt_telefono.text.toString().length < 9) {
                 Toast.makeText(this, "Por favor ingrese 9 digitos", Toast.LENGTH_SHORT).show()
-            }
-            else if(txt_dni.text.toString().length < 8){
-                Toast.makeText(this, "Por favor ingrese 9 digitos", Toast.LENGTH_SHORT).show()
-            }
-            else if (password.length < 6){
-                Toast.makeText(this, "Por favor ingresar contrasena mayor a 6 digitos", Toast.LENGTH_LONG).show()
-            }
-            else if (!Patterns.EMAIL_ADDRESS.matcher(correo).matches()) {
+            } else if (txt_dni.text.toString().length < 8) {
+                Toast.makeText(this, "Por favor ingrese 8 digitos", Toast.LENGTH_SHORT).show()
+            } else if (password.length < 6) {
+                Toast.makeText(
+                    this,
+                    "Por favor ingresar contrasena mayor a 6 digitos",
+                    Toast.LENGTH_LONG
+                ).show()
+            } else if (!Patterns.EMAIL_ADDRESS.matcher(correo).matches()) {
                 Toast.makeText(this, "Formato de correo incorrecto", Toast.LENGTH_LONG).show()
             } else {
                 loadin_layout.visibility = View.VISIBLE
@@ -216,8 +289,33 @@ class RegisterActivity : AppCompatActivity() {
                     .asGif()
                     .load(R.raw.loading)
                     .into(iv_loading)
-                verificarDniYRegistrar(dni, correo, password)
+                if (esCuentaGoogle) {
+                    guardarUsuarioFirestore(
+                        dni,
+                        correo,
+                        primernombre,
+                        segundonombre,
+                        primerapellido,
+                        segundoapellido
+                    )
+
+                    guardar_sesion(correo)
+                    val intent = Intent(this, HomeActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    intent.putExtra("Correo", correo)
+                    startActivity(intent)
+                    finish()
+                    loadin_layout.visibility = View.GONE
+                } else {
+                    verificarDniYRegistrar(dni, correo, password)
+                }
             }
+        }
+
+        btn_IngresarGoogle.setOnClickListener {
+            Toast.makeText(this, "Iniciando login con Google...", Toast.LENGTH_SHORT).show()
+            Log.d("LOGIN_GOOGLE", "Se presionó el botón")
+            login_google()
         }
 
         tv_iniciarsesion.setOnClickListener {
@@ -228,10 +326,10 @@ class RegisterActivity : AppCompatActivity() {
         // Agregando el spinner a la lista
         val listadodocumentos = resources.getStringArray(R.array.documentos)
 
-        val adaptadordocumentos = ArrayAdapter(this,R.layout.spinner_doc_color,listadodocumentos)
-        sp_documentos.adapter=adaptadordocumentos
+        val adaptadordocumentos = ArrayAdapter(this, R.layout.spinner_doc_color, listadodocumentos)
+        sp_documentos.adapter = adaptadordocumentos
 
-        sp_documentos.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
+        sp_documentos.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
                 view: View?,
@@ -253,22 +351,41 @@ class RegisterActivity : AppCompatActivity() {
         firestore.collection("usuarios")
             .whereEqualTo("dni", dni)
             .get()
-            .addOnSuccessListener { result ->
-                if (!result.isEmpty) {
+            .addOnSuccessListener { dniResult ->
+                if (!dniResult.isEmpty) {
                     iv_loading.visibility = View.GONE
                     Toast.makeText(this, "El DNI ya está registrado", Toast.LENGTH_LONG).show()
+                    btn_register.isEnabled = true
                 } else {
-                    // El DNI no existe aún, se puede registrar
-                    btn_register_firebase(correo, password)
+                    // Validar si el correo ya existe también
+                    firestore.collection("usuarios")
+                        .whereEqualTo("correo", correo)
+                        .get()
+                        .addOnSuccessListener { correoResult ->
+                            if (!correoResult.isEmpty) {
+                                iv_loading.visibility = View.GONE
+                                Toast.makeText(this, "El correo ya está registrado", Toast.LENGTH_LONG)
+                                    .show()
+                                btn_register.isEnabled = true
+                            } else {
+                                btn_register_firebase(correo, password)
+                            }
+                        }
+                        .addOnFailureListener {
+                            btn_register.isEnabled = true
+                            iv_loading.visibility = View.GONE
+                            Toast.makeText(this, "Error al verificar correo", Toast.LENGTH_SHORT).show()
+                        }
                 }
             }
             .addOnFailureListener {
+                btn_register.isEnabled = true
+                iv_loading.visibility = View.GONE
                 Toast.makeText(this, "Error al verificar DNI", Toast.LENGTH_SHORT).show()
             }
     }
 
-
-    fun btn_register_firebase(xemail: String,xpassword: String){
+    fun btn_register_firebase(xemail: String, xpassword: String) {
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(xemail, xpassword)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -278,8 +395,16 @@ class RegisterActivity : AppCompatActivity() {
                     val segundonombre = txt_segundonombre.text.toString()
                     val primerapellido = txt_primerapellido.text.toString()
                     val segundoapellido = txt_segundoapellido.text.toString()
+                    btn_register.isEnabled = true
 
-                    guardarUsuarioFirestore(dni,correo,primernombre,segundonombre,primerapellido,segundoapellido)
+                    guardarUsuarioFirestore(
+                        dni,
+                        correo,
+                        primernombre,
+                        segundonombre,
+                        primerapellido,
+                        segundoapellido
+                    )
 
                     guardar_sesion(correo)
                     val intent = Intent(this, HomeActivity::class.java)
@@ -288,11 +413,119 @@ class RegisterActivity : AppCompatActivity() {
                     startActivity(intent)
                     finish()
                     loadin_layout.visibility = View.GONE
-                    Toast.makeText(applicationContext,"Cuenta Creada", Toast.LENGTH_LONG).show()
+                    Toast.makeText(applicationContext, "Cuenta Creada", Toast.LENGTH_LONG).show()
+
                 } else {
-                    Toast.makeText(applicationContext,"Contraseña corta o usuario ya existe", Toast.LENGTH_LONG).show()
+                    btn_register.isEnabled = true
+                    val error = task.exception
+                    val mensaje = when {
+                        error?.message?.contains("email address is already in use", ignoreCase = true) == true ->
+                            "Este correo ya está en uso. Inicie sesión o use otro."
+                        error?.message?.contains("badly formatted", ignoreCase = true) == true ->
+                            "El formato del correo es inválido."
+                        else ->
+                            "Error al crear cuenta: ${error?.localizedMessage}"
+                    }
+                    Toast.makeText(applicationContext, mensaje, Toast.LENGTH_LONG).show()
+                    loadin_layout.visibility = View.GONE
                 }
             }
+    }
+
+
+    fun login_google() {
+        val credentialManager = CredentialManager.create(this)
+
+        val signInWithGoogleOption =
+            GetSignInWithGoogleOption.Builder(getString(R.string.web_cliente))
+                .setNonce("nonce") // Opcional, puedes eliminarlo si no lo necesitas
+                .build()
+
+        val request = GetCredentialRequest.Builder()
+            .addCredentialOption(signInWithGoogleOption)
+            .build()
+
+        lifecycleScope.launch {
+            try {
+                Log.d("LOGIN_GOOGLE", "Intentando obtener credencial...")
+                val result = credentialManager.getCredential(
+                    request = request,
+                    context = this@RegisterActivity
+                )
+                Log.d("LOGIN_GOOGLE", "Credencial obtenida: ${result.credential}")
+                handleSignIn(result)
+            } catch (e: GetCredentialException) {
+                Log.e("LOGIN_GOOGLE", "Error al obtener la credencial", e)
+            }
+        }
+    }
+
+
+    fun handleSignIn(result: GetCredentialResponse) {
+        // Handle the successfully returned credential.
+        val credential = result.credential
+
+        Log.d("CREDENTIAL_TYPE", "Tipo de credential: ${credential::class.java.name}")
+
+        when (credential) {
+            is CustomCredential -> {
+                if (credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
+                    try {
+                        val googleIdTokenCredential = GoogleIdTokenCredential
+                            .createFrom(credential.data)
+
+                        val firebaseCredential = GoogleAuthProvider.getCredential(
+                            googleIdTokenCredential.idToken, null
+                        )
+
+                        FirebaseAuth.getInstance().signInWithCredential(firebaseCredential)
+                            .addOnCompleteListener(this) { task ->
+                                if (task.isSuccessful) {
+                                    val user = task.result.user
+                                    val nombreCompleto = user?.displayName ?: ""
+                                    val correo = user?.email ?: ""
+
+                                    txt_logincorreo.setText(correo)
+
+                                    val partes = nombreCompleto.split(" ")
+                                    if (partes.size >= 2) {
+                                        txt_primernombre.setText(partes[0])
+                                        txt_primerapellido.setText(partes[1])
+                                    } else {
+                                        txt_primernombre.setText(nombreCompleto)
+                                    }
+                                    guardarUsuarioFirestore(
+                                        dni = "pendiente", // si aún no tienes DNI puedes poner un placeholder
+                                        correo = correo,
+                                        primernombre = partes.getOrNull(0) ?: "",
+                                        segundonombre = "",
+                                        primerapellido = partes.getOrNull(1) ?: "",
+                                        segundoapellido = ""
+                                    )
+                                    Toast.makeText(
+                                        this,
+                                        "Verifica y completa tus datos antes de continuar",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                }
+                            }
+
+                    } catch (e: GoogleIdTokenParsingException) {
+                        Toast.makeText(applicationContext, "Token inválido: $e", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                } else {
+                    // Aquí sí puedes usar else, porque es parte del if-else.
+                    Toast.makeText(
+                        applicationContext,
+                        "Tipo de credencial no reconocido",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+        Log.d("LOGIN_GOOGLE", "Entrando a handleSignIn")
+        Log.d("LOGIN_GOOGLE", "Tipo de credential: ${credential::class.java.name}")
     }
 
     fun guardarUsuarioFirestore(
@@ -313,22 +546,31 @@ class RegisterActivity : AppCompatActivity() {
         )
 
         firestore.collection("usuarios")
-            .add(usuario)
+            .document(dni)
+            .set(usuario)
             .addOnSuccessListener {
-                Toast.makeText(applicationContext, "Datos registrados en Firestore", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    applicationContext,
+                    "Datos registrados en Firestore",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
             .addOnFailureListener {
                 loadin_layout.visibility = View.GONE
-                Toast.makeText(applicationContext, "Error al registrar en Firestore", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    applicationContext,
+                    "Error al registrar en Firestore",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
     }
 
-    fun guardar_sesion(correo: String){
-        val guardar = getSharedPreferences(LoginActivity.Global.preferencias_compartidas, MODE_PRIVATE).edit()
-        guardar.putString("Correo",correo)
+    fun guardar_sesion(correo: String) {
+        val guardar =
+            getSharedPreferences(LoginActivity.Global.preferencias_compartidas, MODE_PRIVATE).edit()
+        guardar.putString("Correo", correo)
         guardar.apply()
     }
-
 
 
 }
