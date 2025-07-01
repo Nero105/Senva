@@ -8,6 +8,7 @@ import android.util.Log
 import android.util.Patterns
 import android.view.View
 import android.view.WindowInsetsController
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
@@ -168,6 +169,14 @@ class RegisterActivity : AppCompatActivity() {
 
 
         btn_register.setOnClickListener {
+
+            // Cerrar teclado automáticamente
+            val view = this.currentFocus
+            if (view != null) {
+                val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(view.windowToken, 0)
+            }
+
             val correo = txt_logincorreo.text.toString()
             val password = txt_loginpassword.text.toString()
             val dni = txt_dni.text.toString()
@@ -290,23 +299,61 @@ class RegisterActivity : AppCompatActivity() {
                     .load(R.raw.loading)
                     .into(iv_loading)
                 if (esCuentaGoogle) {
-                    guardarUsuarioFirestore(
-                        dni,
-                        correo,
-                        primernombre,
-                        segundonombre,
-                        primerapellido,
-                        segundoapellido
-                    )
-
-                    guardar_sesion(correo)
-                    val intent = Intent(this, HomeActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    intent.putExtra("Correo", correo)
-                    startActivity(intent)
-                    finish()
-                    loadin_layout.visibility = View.GONE
-                } else {
+                    firestore.collection("usuarios")
+                        .document(dni)
+                        .get()
+                        .addOnSuccessListener { document ->
+                            if (document.exists()) {
+                                val correoExistente = document.getString("correo")
+                                if (correoExistente != correo) {
+                                    loadin_layout.visibility = View.GONE
+                                    Toast.makeText(this, "Este DNI ya está registrado con otro correo", Toast.LENGTH_LONG).show()
+                                    btn_register.isEnabled = true
+                                } else {
+                                    // mismo correo
+                                    guardarUsuarioFirestore(
+                                        dni,
+                                        correo,
+                                        primernombre,
+                                        segundonombre,
+                                        primerapellido,
+                                        segundoapellido
+                                    ) {
+                                        guardar_sesion(correo)
+                                        val intent = Intent(this, HomeActivity::class.java)
+                                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                        intent.putExtra("Correo", correo)
+                                        startActivity(intent)
+                                        finish()
+                                        loadin_layout.visibility = View.GONE
+                                    }
+                                }
+                            } else {
+                                // No existe ese DNI → registrar sin problema
+                                guardarUsuarioFirestore(
+                                    dni,
+                                    correo,
+                                    primernombre,
+                                    segundonombre,
+                                    primerapellido,
+                                    segundoapellido
+                                ) {
+                                    guardar_sesion(correo)
+                                    val intent = Intent(this, HomeActivity::class.java)
+                                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                    intent.putExtra("Correo", correo)
+                                    startActivity(intent)
+                                    finish()
+                                    loadin_layout.visibility = View.GONE
+                                }
+                            }
+                        }
+                        .addOnFailureListener {
+                            loadin_layout.visibility = View.GONE
+                            Toast.makeText(this, "Error al verificar el DNI", Toast.LENGTH_SHORT).show()
+                        }
+                }
+                else {
                     verificarDniYRegistrar(dni, correo, password)
                 }
             }
@@ -353,7 +400,7 @@ class RegisterActivity : AppCompatActivity() {
             .get()
             .addOnSuccessListener { dniResult ->
                 if (!dniResult.isEmpty) {
-                    iv_loading.visibility = View.GONE
+                    loadin_layout.visibility = View.GONE
                     Toast.makeText(this, "El DNI ya está registrado", Toast.LENGTH_LONG).show()
                     btn_register.isEnabled = true
                 } else {
@@ -389,31 +436,50 @@ class RegisterActivity : AppCompatActivity() {
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(xemail, xpassword)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    val correo = task.result.user?.email.toString()
-                    val dni = txt_dni.text.toString()
-                    val primernombre = txt_primernombre.text.toString()
-                    val segundonombre = txt_segundonombre.text.toString()
-                    val primerapellido = txt_primerapellido.text.toString()
-                    val segundoapellido = txt_segundoapellido.text.toString()
-                    btn_register.isEnabled = true
+                    val firebaseUser = FirebaseAuth.getInstance().currentUser
 
-                    guardarUsuarioFirestore(
-                        dni,
-                        correo,
-                        primernombre,
-                        segundonombre,
-                        primerapellido,
-                        segundoapellido
-                    )
+                    firebaseUser?.sendEmailVerification()
+                        ?.addOnCompleteListener { verifyTask ->
+                            if (verifyTask.isSuccessful) {
+                                Toast.makeText(
+                                    this,
+                                    "Verifica tu correo antes de iniciar sesión",
+                                    Toast.LENGTH_LONG
+                                ).show()
 
-                    guardar_sesion(correo)
-                    val intent = Intent(this, HomeActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    intent.putExtra("Correo", correo)
-                    startActivity(intent)
-                    finish()
-                    loadin_layout.visibility = View.GONE
-                    Toast.makeText(applicationContext, "Cuenta Creada", Toast.LENGTH_LONG).show()
+                                // Guardamos los datos en Firestore
+                                val correo = firebaseUser.email.toString()
+                                val dni = txt_dni.text.toString()
+                                val primernombre = txt_primernombre.text.toString()
+                                val segundonombre = txt_segundonombre.text.toString()
+                                val primerapellido = txt_primerapellido.text.toString()
+                                val segundoapellido = txt_segundoapellido.text.toString()
+                                btn_register.isEnabled = true
+
+                                guardarUsuarioFirestore(
+                                    dni,
+                                    correo,
+                                    primernombre,
+                                    segundonombre,
+                                    primerapellido,
+                                    segundoapellido
+                                ) {
+                                    FirebaseAuth.getInstance().signOut()
+                                    val intent = Intent(this, LoginActivity::class.java)
+                                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                    startActivity(intent)
+                                    finish()
+                                    loadin_layout.visibility = View.GONE
+                                }
+                            } else {
+                                Toast.makeText(
+                                    this,
+                                    "No se pudo enviar el correo de verificación",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                loadin_layout.visibility = View.GONE
+                            }
+                        }
 
                 } else {
                     btn_register.isEnabled = true
@@ -431,8 +497,6 @@ class RegisterActivity : AppCompatActivity() {
                 }
             }
     }
-
-
     fun login_google() {
         val credentialManager = CredentialManager.create(this)
 
@@ -495,18 +559,19 @@ class RegisterActivity : AppCompatActivity() {
                                         txt_primernombre.setText(nombreCompleto)
                                     }
                                     guardarUsuarioFirestore(
-                                        dni = "pendiente", // si aún no tienes DNI puedes poner un placeholder
+                                        dni = "pendiente",
                                         correo = correo,
                                         primernombre = partes.getOrNull(0) ?: "",
                                         segundonombre = "",
                                         primerapellido = partes.getOrNull(1) ?: "",
                                         segundoapellido = ""
-                                    )
+                                    ){
                                     Toast.makeText(
                                         this,
                                         "Verifica y completa tus datos antes de continuar",
                                         Toast.LENGTH_LONG
                                     ).show()
+                                    }
                                 }
                             }
 
@@ -534,7 +599,8 @@ class RegisterActivity : AppCompatActivity() {
         primernombre: String,
         segundonombre: String,
         primerapellido: String,
-        segundoapellido: String
+        segundoapellido: String,
+        onSuccess: () -> Unit
     ) {
         val usuario = hashMapOf(
             "dni" to dni,
@@ -545,26 +611,57 @@ class RegisterActivity : AppCompatActivity() {
             "segundoapellido" to segundoapellido
         )
 
-        firestore.collection("usuarios")
-            .document(dni)
-            .set(usuario)
-            .addOnSuccessListener {
-                Toast.makeText(
-                    applicationContext,
-                    "Datos registrados en Firestore",
-                    Toast.LENGTH_SHORT
-                ).show()
+        val docRef = firestore.collection("usuarios").document(dni)
+
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    // Ya existe un usuario con este DNI
+                    val correoExistente = document.getString("correo")
+                    if (correoExistente != correo) {
+                        Toast.makeText(
+                            applicationContext,
+                            "Este DNI ya está registrado con otro correo.",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    } else {
+                        Toast.makeText(
+                            applicationContext,
+                            "Este usuario ya está registrado.",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                    loadin_layout.visibility = View.GONE
+                } else {
+                    // DNI nuevo → registrar
+                    docRef.set(usuario)
+                        .addOnSuccessListener {
+                            Toast.makeText(
+                                applicationContext,
+                                "Registro exitoso.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            onSuccess()
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(
+                                applicationContext,
+                                "Error al registrar datos.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            loadin_layout.visibility = View.GONE
+                        }
+                }
             }
             .addOnFailureListener {
-                loadin_layout.visibility = View.GONE
                 Toast.makeText(
                     applicationContext,
-                    "Error al registrar en Firestore",
+                    "Error al verificar el DNI.",
                     Toast.LENGTH_SHORT
                 ).show()
+                loadin_layout.visibility = View.GONE
             }
     }
-
     fun guardar_sesion(correo: String) {
         val guardar =
             getSharedPreferences(LoginActivity.Global.preferencias_compartidas, MODE_PRIVATE).edit()

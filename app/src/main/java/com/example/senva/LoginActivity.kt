@@ -48,6 +48,8 @@ class LoginActivity : AppCompatActivity() {
     // Eye Password
     private lateinit var iv_eye_closed: ImageView
 
+    private lateinit var tv_olvidaste: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -92,8 +94,30 @@ class LoginActivity : AppCompatActivity() {
         iv_loading = findViewById<ImageView>(R.id.iv_loadingL)
         // Ingresar con Google
         btn_IngresarGoogle = findViewById<Button>(R.id.btnIngresarGoogleL)
+        // Recuperar contraseña
+        tv_olvidaste = findViewById<TextView>(R.id.tvolvidaste)
 
+        tv_olvidaste.setOnClickListener {
+            val correo = txt_logincorreo.text.toString().trim()
 
+            if (correo.isEmpty()) {
+                Toast.makeText(this, "Por favor escribe tu correo", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (!Patterns.EMAIL_ADDRESS.matcher(correo).matches()) {
+                Toast.makeText(this, "Correo inválido", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            FirebaseAuth.getInstance().sendPasswordResetEmail(correo)
+                .addOnSuccessListener {
+                    Toast.makeText(this, "Correo de recuperación enviado", Toast.LENGTH_LONG).show()
+                }
+                .addOnFailureListener {
+                    Toast.makeText(this, "Error al enviar el correo", Toast.LENGTH_SHORT).show()
+                }
+        }
 
         iv_eye_closed.setOnClickListener {
             passwordVisible = !passwordVisible
@@ -236,23 +260,30 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    fun login_firebase(xemail: String,xpassword: String){
+    fun login_firebase(xemail: String, xpassword: String) {
         FirebaseAuth.getInstance().signInWithEmailAndPassword(xemail, xpassword)
             .addOnCompleteListener(this) { task ->
+                loading_layout_L.visibility = View.GONE
+
                 if (task.isSuccessful) {
-                    loading_layout_L.visibility = View.GONE
-                    guardar_sesion(task.result.user?.email.toString())
-                    var intent = Intent(this, HomeActivity::class.java)
-                    intent.putExtra("Correo",task.result.user?.email)
-                    startActivity(intent)
-                    finish()
+                    val user = FirebaseAuth.getInstance().currentUser
+
+                    if (user != null && user.isEmailVerified) {
+                        guardar_sesion(user.email.toString())
+                        val intent = Intent(this, HomeActivity::class.java)
+                        intent.putExtra("Correo", user.email)
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        FirebaseAuth.getInstance().signOut()
+                        Toast.makeText(this, "Verifica tu correo antes de iniciar sesión", Toast.LENGTH_LONG).show()
+                    }
+
                 } else {
-                    loading_layout_L.visibility = View.GONE
-                    Toast.makeText(applicationContext,"Correo o Contrasena Incorrecta", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Correo o Contraseña Incorrecta", Toast.LENGTH_LONG).show()
                 }
             }
     }
-
     fun verificar_sesion_abierta(){
         var sesion_abierta: SharedPreferences = getSharedPreferences(Global.preferencias_compartidas, MODE_PRIVATE)
         var correo = sesion_abierta.getString("Correo",null)
