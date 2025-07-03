@@ -77,4 +77,6 @@ dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.3")
 
     implementation("com.google.firebase:firebase-auth-ktx")
+    // Dependencia Fragments:
+    implementation("androidx.fragment:fragment-ktx:1.8.8")
 }

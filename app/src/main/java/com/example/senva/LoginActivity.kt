@@ -235,10 +235,13 @@ class LoginActivity : AppCompatActivity() {
                                 .get()
                                 .addOnSuccessListener { result ->
                                     if (!result.isEmpty) {
-                                        // Ya está registrado
+                                        val documento = result.documents[0]
+                                        val primerNombre = documento.getString("primeronombre") ?: ""
+
                                         guardar_sesion(correo)
+
                                         val intent = Intent(this, HomeActivity::class.java)
-                                        intent.putExtra("Correo", correo)
+                                        intent.putExtra("Nombre", primerNombre)
                                         startActivity(intent)
                                         finish()
                                     } else {
@@ -267,8 +270,9 @@ class LoginActivity : AppCompatActivity() {
 
                 if (task.isSuccessful) {
                     val user = FirebaseAuth.getInstance().currentUser
-
                     if (user != null && user.isEmailVerified) {
+                        val correo = user.email.toString()
+
                         guardar_sesion(user.email.toString())
                         val intent = Intent(this, HomeActivity::class.java)
                         intent.putExtra("Correo", user.email)
@@ -284,14 +288,13 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
     }
-    fun verificar_sesion_abierta(){
-        var sesion_abierta: SharedPreferences = getSharedPreferences(Global.preferencias_compartidas, MODE_PRIVATE)
-        var correo = sesion_abierta.getString("Correo",null)
+    fun verificar_sesion_abierta() {
+        val sesion_abierta: SharedPreferences = getSharedPreferences(Global.preferencias_compartidas, MODE_PRIVATE)
+        val correo = sesion_abierta.getString("Correo", null)
 
-
-        if (correo != null){
-            var cajaCarga = loading_layout_L
-            var carga = iv_loading
+        if (correo != null) {
+            val cajaCarga = loading_layout_L
+            val carga = iv_loading
 
             cajaCarga.visibility = View.VISIBLE
             Glide.with(this)
@@ -299,17 +302,26 @@ class LoginActivity : AppCompatActivity() {
                 .load(R.raw.loading)
                 .into(carga)
 
-            // Falsa carga
-            window.decorView.postDelayed({
-                val intent = Intent(this, HomeActivity::class.java)
-                intent.putExtra("Correo",correo)
-                startActivity(intent)
-                finish()
-            },1500)
+            val firestore = com.google.firebase.firestore.FirebaseFirestore.getInstance()
+            firestore.collection("usuarios")
+                .whereEqualTo("correo", correo)
+                .get()
+                .addOnSuccessListener { result ->
+                    if (!result.isEmpty) {
+                        val documento = result.documents[0]
+                        val primerNombre = documento.getString("primeronombre") ?: ""
 
-
+                        val intent = Intent(this, HomeActivity::class.java)
+                        intent.putExtra("Nombre", primerNombre)
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        Toast.makeText(this, "No se encontró información del usuario", Toast.LENGTH_SHORT).show()
+                    }
+                }
         }
     }
+
 
     fun guardar_sesion(correo: String){
         var guardar_sesion: SharedPreferences.Editor = getSharedPreferences(Global.preferencias_compartidas, MODE_PRIVATE).edit()

@@ -1,39 +1,33 @@
 package com.example.senva
 
-import android.content.Intent
-import android.content.SharedPreferences
-import android.credentials.ClearCredentialStateRequest
-import android.credentials.CredentialManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Patterns
 import android.view.View
 import android.view.WindowInsetsController
-import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import com.example.senva.LoginActivity.Global
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class HomeActivity : AppCompatActivity() {
 
-    // 19062025 - EEP - Invocando allow los id de xml Home
-    private lateinit var tv_extocorreo: TextView
-    private lateinit var tv_cerrarsesion: TextView
+    private lateinit var tv_nombresaludo: TextView
+    private lateinit var navigation: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        //20062025 - EEP - Hacer que el bar status resalte
+
+
+        // Estilo barra de estado
         WindowCompat.setDecorFitsSystemWindows(window, false)
         window.statusBarColor = getColor(R.color.white)
 
@@ -43,10 +37,8 @@ class HomeActivity : AppCompatActivity() {
                 WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
             )
         } else {
-            // Para Android 10 o menor (seguridad)
             @Suppress("DEPRECATION")
-            window.decorView.systemUiVisibility =
-                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.LinearHome)) { v, insets ->
@@ -54,36 +46,43 @@ class HomeActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        navigation = findViewById(R.id.navMenu)
+        navigation.selectedItemId = R.id.itemFragment2
 
-        AgregarReferencia()
-
+        // Cargar fragmento por defecto
+        supportFragmentManager.commit {
+            replace<InicioFragmento>(R.id.frameContainer)
+        }
+        
+        navigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.itemFragment1 -> {
+                    supportFragmentManager.commit {
+                        replace<MiCitaFragmento>(R.id.frameContainer)
+                    }
+                    true
+                }
+                R.id.itemFragment2 -> {
+                    supportFragmentManager.commit {
+                        replace<InicioFragmento>(R.id.frameContainer)
+                    }
+                    true
+                }
+                R.id.itemFragment3 -> {
+                    supportFragmentManager.commit {
+                        replace<DiagnosticoFragment>(R.id.frameContainer)
+                    }
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
-    fun AgregarReferencia() {
-        tv_extocorreo = findViewById<TextView>(R.id.tvextracorreo)
-        tv_cerrarsesion = findViewById<TextView>(R.id.tvcerrarsesion)
-
-        tv_cerrarsesion.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            borrar_sesion()
-            finish()
-        }
-
-        val correo = intent.getStringExtra("Correo")
-        if (correo != null){
-            tv_extocorreo.text = correo
-        } else{
-            tv_extocorreo.text = "No se recibió correo"
-        }
-
-    }
-
-    fun borrar_sesion() {
+    private fun borrar_sesion() {
         val borrarSesion = getSharedPreferences(Global.preferencias_compartidas, MODE_PRIVATE).edit()
         borrarSesion.clear()
         borrarSesion.apply()
-
-        Firebase.auth.signOut()
+        FirebaseAuth.getInstance().signOut()
     }
 }
