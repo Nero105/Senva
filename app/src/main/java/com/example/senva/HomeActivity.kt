@@ -1,39 +1,78 @@
 package com.example.senva
 
 import android.content.Intent
-import android.content.SharedPreferences
-import android.credentials.ClearCredentialStateRequest
-import android.credentials.CredentialManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Patterns
+import android.provider.Settings
+import android.view.Gravity
+import android.view.Gravity.*
 import android.view.View
 import android.view.WindowInsetsController
-import android.widget.Button
-import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.senva.LoginActivity.Global
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
+import androidx.drawerlayout.widget.DrawerLayout
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import androidx.appcompat.widget.Toolbar
+import androidx.appcompat.app.ActionBarDrawerToggle
+import android.graphics.BitmapFactory
+import android.net.Uri
+import android.widget.ImageButton
+import com.bumptech.glide.Glide
+import androidx.core.view.GravityCompat
 
 class HomeActivity : AppCompatActivity() {
 
-    // 19062025 - EEP - Invocando allow los id de xml Home
-    private lateinit var tv_extocorreo: TextView
-    private lateinit var tv_cerrarsesion: TextView
+    private lateinit var tv_nombresaludo: TextView
+    private lateinit var navigation: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        //20062025 - EEP - Hacer que el bar status resalte
+        // Referencias al DrawerLayout y NavigationView
+        val drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
+        val navigationView = findViewById<NavigationView>(R.id.navigation_view)
+
+        // Referencia al header del NavigationView
+        val headerView = navigationView.getHeaderView(0)
+        val imageViewProfile = headerView.findViewById<ImageView>(R.id.imageViewProfile)
+
+        val textViewSaludo = headerView.findViewById<TextView>(R.id.textViewSaludo)
+
+        // Cargar el nombre del usuario dinámicamente (ejemplo: desde SharedPreferences o Firestore)
+        val sharedPreferences = getSharedPreferences(LoginActivity.Global.preferencias_compartidas, MODE_PRIVATE)
+        val nombreUsuario = sharedPreferences.getString("Nombre", "Usuario")
+        textViewSaludo.text = "Hola, $nombreUsuario!"
+
+        // Configurar el botón de imagen de usuario para abrir el Drawer
+        val btnDrawerUser = findViewById<ImageButton>(R.id.btnDrawerUser)
+        btnDrawerUser.setOnClickListener {
+            drawerLayout.openDrawer(GravityCompat.START)
+        }
+
+        // Cargar la imagen del usuario (desde SharedPreferences, Firestore, etc.)
+        val fotoPerfil = sharedPreferences.getString("FotoPerfil", null)
+        if (fotoPerfil != null && fotoPerfil.isNotEmpty()) {
+            // Si es una URL o ruta local, puedes usar Glide o BitmapFactory
+            Glide.with(this)
+                .load(fotoPerfil)
+                .placeholder(R.drawable.usuario) // Cambia por tu imagen por defecto
+                .into(btnDrawerUser)
+        } else {
+            btnDrawerUser.setImageResource(R.drawable.usuario) // Cambia por tu imagen por defecto
+        }
+
+        // Estilo barra de estado
         WindowCompat.setDecorFitsSystemWindows(window, false)
         window.statusBarColor = getColor(R.color.white)
 
@@ -43,10 +82,8 @@ class HomeActivity : AppCompatActivity() {
                 WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
             )
         } else {
-            // Para Android 10 o menor (seguridad)
             @Suppress("DEPRECATION")
-            window.decorView.systemUiVisibility =
-                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.LinearHome)) { v, insets ->
@@ -54,36 +91,65 @@ class HomeActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        navigation = findViewById(R.id.navMenu)
+        navigation.selectedItemId = R.id.itemFragment2
 
-        AgregarReferencia()
-
-    }
-
-    fun AgregarReferencia() {
-        tv_extocorreo = findViewById<TextView>(R.id.tvextracorreo)
-        tv_cerrarsesion = findViewById<TextView>(R.id.tvcerrarsesion)
-
-        tv_cerrarsesion.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            borrar_sesion()
-            finish()
+        // Cargar fragmento por defecto
+        supportFragmentManager.commit {
+            replace<InicioFragmento>(R.id.frameContainer)
+        }
+        
+        navigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.itemFragment1 -> {
+                    supportFragmentManager.commit {
+                        replace<MiCitaFragmento>(R.id.frameContainer)
+                    }
+                    true
+                }
+                R.id.itemFragment2 -> {
+                    supportFragmentManager.commit {
+                        replace<InicioFragmento>(R.id.frameContainer)
+                    }
+                    true
+                }
+                R.id.itemFragment3 -> {
+                    supportFragmentManager.commit {
+                        replace<DiagnosticoFragment>(R.id.frameContainer)
+                    }
+                    true
+                }
+                else -> false
+            }
         }
 
-        val correo = intent.getStringExtra("Correo")
-        if (correo != null){
-            tv_extocorreo.text = correo
-        } else{
-            tv_extocorreo.text = "No se recibió correo"
+        // Manejar clics en el menú lateral
+        navigationView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.itemPerfil -> {
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                    true
+                }
+                R.id.itemCerrarSesion -> {
+                    borrar_sesion()
+                    val intent = Intent(this, LoginActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                    finish()
+                    true
+                }
+                else -> {
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                    false
+                }
+            }
         }
-
     }
 
-    fun borrar_sesion() {
-        val borrarSesion = getSharedPreferences(Global.preferencias_compartidas, MODE_PRIVATE).edit()
+    private fun borrar_sesion() {
+        val borrarSesion = getSharedPreferences(LoginActivity.Global.preferencias_compartidas, MODE_PRIVATE).edit()
         borrarSesion.clear()
         borrarSesion.apply()
-
-        Firebase.auth.signOut()
+        FirebaseAuth.getInstance().signOut()
     }
 }
