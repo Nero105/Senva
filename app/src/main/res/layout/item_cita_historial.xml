@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Header con especialidad y fecha -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/calendario"
+                android:contentDescription="Cita" />
+
+            <TextView
+                android:id="@+id/tvEspecialidad"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Medicina General"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginStart="8dp" />
+
+            <TextView
+                android:id="@+id/tvFecha"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2024-01-15"
+                android:textSize="12sp"
+                android:textColor="@color/gray" />
+        </LinearLayout>
+
+        <!-- Información de ubicación -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ubicación:"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/tvDireccion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Av. Principal 123"
+                android:textSize="14sp"
+                android:textColor="@color/gray"
+                android:layout_marginTop="4dp" />
+
+            <TextView
+                android:id="@+id/tvProvincia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Prov: Lima"
+                android:textSize="14sp"
+                android:textColor="@color/gray" />
+
+            <TextView
+                android:id="@+id/tvDistrito"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dist: San Juan de Lurigancho"
+                android:textSize="14sp"
+                android:textColor="@color/gray" />
+        </LinearLayout>
+
+        <!-- Botones de acción -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp">
+
+            <Button
+                android:id="@+id/btnVerMapa"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Ver en Mapa"
+                android:textSize="12sp"
+                android:background="@drawable/rounder_backgroundbotton"
+                android:textColor="@color/white"
+                android:layout_marginEnd="4dp" />
+
+            <Button
+                android:id="@+id/btnEliminar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Eliminar"
+                android:textSize="12sp"
+                android:background="@drawable/rounded_backgroundgris"
+                android:textColor="@color/white"
+                android:layout_marginStart="4dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView> 

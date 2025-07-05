@@ -182,4 +182,56 @@
                 android:textSize="14sp" />
         </LinearLayout>
     </LinearLayout>
+
+    <!-- Título Disponibles -->
+    <TextView
+        android:id="@+id/tvDisponibles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Disponibles"
+        android:textColor="#416D1E"
+        android:background= "@drawable/rounded_top_background"
+        android:textStyle="bold"
+        android:textSize="25sp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:gravity="center"
+        android:padding="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="0dp"/>
+
+    <!-- Lista de doctores disponibles -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvDoctoresDisponibles"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:clipToPadding="false"/>
+
+    <!-- Título Ocupados -->
+    <TextView
+        android:id="@+id/tvNoDisponibles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ocupados"
+        android:textColor="#416D1E9C"
+        android:background= "@drawable/rounded_top_background_no"
+        android:textStyle="bold"
+        android:textSize="25sp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:gravity="center"
+        android:padding="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="0dp"/>
+
+    <!-- Lista de Ocupados -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvDoctoresOcupados"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never"
+        android:layout_marginBottom="16dp"/>
 </LinearLayout>

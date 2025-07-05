@@ -118,17 +118,39 @@
         </LinearLayout>
 
         <!-- Sección Citas -->
-        <TextView
-            android:id="@+id/tvTituloCitas"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Citas"
-            android:textColor="#4CAF1C"
-            android:textStyle="bold"
-            android:textSize="22sp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
             android:layout_marginTop="12dp"
             android:layout_marginStart="16dp"
-            />
+            android:layout_marginEnd="16dp">
+
+            <TextView
+                android:id="@+id/tvTituloCitas"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Citas"
+                android:textColor="#4CAF1C"
+                android:textStyle="bold"
+                android:textSize="22sp" />
+
+            <Button
+                android:id="@+id/btnVerHistorial"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ver Historial"
+                android:textSize="12sp"
+                android:background="@drawable/rounder_backgroundbotton"
+                android:textColor="@color/white"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp" />
+
+        </LinearLayout>
 
         <include layout="@layout/item_cita" />
 

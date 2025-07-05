@@ -35,10 +35,19 @@ class MiCitaActivity : AppCompatActivity(), OnMapReadyCallback {
     private var citaLng: Double = -77.012
     private var citaDireccion: String = "Dpto: Lima\nProv: Lima\nDist: San Juan de Lurigancho"
     private var marker: Marker? = null
+    private lateinit var databaseHelper: DatabaseHelper
+    
+    // Variables para almacenar la información de ubicación
+    private var direccionSeleccionada: String = ""
+    private var provinciaSeleccionada: String = ""
+    private var distritoSeleccionado: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mi_cita)
+        
+        // Inicializar la base de datos
+        databaseHelper = DatabaseHelper(this)
 
         mapView = findViewById(R.id.mapViewCita)
         mapView.onCreate(savedInstanceState)
@@ -62,8 +71,28 @@ class MiCitaActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         btnContinuar.setOnClickListener {
-            val intent = Intent(this, EspecialidadesActivity::class.java)
-            startActivity(intent)
+            // Guardar la información de ubicación en la base de datos
+            if (direccionSeleccionada.isNotEmpty() && provinciaSeleccionada.isNotEmpty() && distritoSeleccionado.isNotEmpty()) {
+                val citaId = databaseHelper.insertarCita(
+                    direccion = direccionSeleccionada,
+                    provincia = provinciaSeleccionada,
+                    distrito = distritoSeleccionado,
+                    latitud = citaLat,
+                    longitud = citaLng,
+                    especialidad = "" // Se llenará en la siguiente pantalla
+                )
+                
+                if (citaId != -1L) {
+                    // Pasar el ID de la cita a la siguiente actividad
+                    val intent = Intent(this, EspecialidadesActivity::class.java)
+                    intent.putExtra("CITA_ID", citaId.toInt())
+                    startActivity(intent)
+                } else {
+                    Snackbar.make(btnContinuar, "Error al guardar la ubicación", Snackbar.LENGTH_SHORT).show()
+                }
+            } else {
+                Snackbar.make(btnContinuar, "Por favor selecciona una ubicación en el mapa", Snackbar.LENGTH_SHORT).show()
+            }
         }
 
         btnBack.setOnClickListener {
@@ -130,13 +159,27 @@ class MiCitaActivity : AppCompatActivity(), OnMapReadyCallback {
             val tvDist = findViewById<TextView>(R.id.tvDist)
             if (!addresses.isNullOrEmpty()) {
                 val addr = addresses[0]
-                tvDpto?.text = "Dpto: ${addr.adminArea ?: "-"}"
-                tvProv?.text = "Prov: ${addr.subAdminArea ?: "-"}"
-                tvDist?.text = "Dist: ${addr.locality ?: addr.subLocality ?: "-"}"
+                val dpto = addr.adminArea ?: "-"
+                val prov = addr.subAdminArea ?: "-"
+                val dist = addr.locality ?: addr.subLocality ?: "-"
+                
+                tvDpto?.text = "Dpto: $dpto"
+                tvProv?.text = "Prov: $prov"
+                tvDist?.text = "Dist: $dist"
+                
+                // Guardar la información para la base de datos
+                direccionSeleccionada = addr.getAddressLine(0) ?: ""
+                provinciaSeleccionada = prov
+                distritoSeleccionado = dist
             } else {
                 tvDpto?.text = "Dpto: -"
                 tvProv?.text = "Prov: -"
                 tvDist?.text = "Dist: -"
+                
+                // Limpiar la información
+                direccionSeleccionada = ""
+                provinciaSeleccionada = ""
+                distritoSeleccionado = ""
             }
             Snackbar.make(findViewById(R.id.mapViewCita), "Ubicación de la cita actualizada", Snackbar.LENGTH_SHORT).show()
         }

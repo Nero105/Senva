@@ -1,9 +1,11 @@
 package com.example.senva
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -58,6 +60,13 @@ class InicioFragmento : Fragment() {
         }
 
         viewPager.adapter = adapter
+
+        // Configurar botón de historial
+        val btnVerHistorial = view.findViewById<Button>(R.id.btnVerHistorial)
+        btnVerHistorial.setOnClickListener {
+            val intent = Intent(requireContext(), HistorialCitasActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun cargarFotoUsuario() {

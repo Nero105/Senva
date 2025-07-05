@@ -42,6 +42,10 @@
         <activity android:name=".MiCitaActivity"/>
         <!-- Especialidades -->
         <activity android:name=".EspecialidadesActivity"/>
+        <!-- Historial de Citas -->
+        <activity android:name=".HistorialCitasActivity"/>
+        <!-- Lista de Doctores -->
+        <activity android:name=".ListaDoctoresActivity"/>
 
     </application>
 
