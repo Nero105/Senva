@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    app:cardCornerRadius="24dp"
+    app:cardElevation="0dp"
+    app:strokeColor="#E0E0E0"
+    app:strokeWidth="1dp"
+    app:cardBackgroundColor="#e6f2ec">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="125dp"
+        android:paddingBottom="3dp"
+        >
+
+        <!-- Imagen circular -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgDoctor"
+            android:layout_width="95dp"
+            android:layout_height="92dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/white"
+            android:scaleType="centerCrop"
+            android:src="@drawable/mujeranuncio"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/CircleImageView" />
+
+        <!-- Contenedor de textos y botón -->
+        <LinearLayout
+            android:id="@+id/contenedorTextos"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintStart_toEndOf="@id/imgDoctor"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/tvNombreDoctor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DRA. RAMÍREZ"
+                android:textColor="#145c73"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif"
+                android:letterSpacing="0.01"
+                android:layout_marginBottom="-2dp"/>
+
+            <TextView
+                android:id="@+id/tvEspecialidad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cardióloga"
+                android:textColor="#7ca3a7"
+                android:textSize="15sp"
+                android:fontFamily="sans-serif"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="-2dp"/>
+
+            <TextView
+                android:id="@+id/tvFechaHora"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Viernes / 3 may   (10:00am)"
+                android:textColor="#7ca3a7"
+                android:textSize="15sp"
+                android:fontFamily="sans-serif"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="8dp"/>
+
+            <Button
+                android:id="@+id/btnVerMas"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_gravity="start"
+                android:background="@drawable/rounder_backgroundbotton"
+                android:backgroundTint="#3b6b7a"
+                android:fontFamily="sans-serif"
+                android:minWidth="80dp"
+                android:paddingLeft="20dp"
+                android:paddingTop="0dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="0dp"
+                android:text="Ver más"
+                android:textColor="#ffffff"
+                android:layout_marginStart="50dp"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>
