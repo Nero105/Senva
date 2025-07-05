@@ -111,7 +111,7 @@ class MiCitaFragmento : Fragment(), OnMapReadyCallback {
             googleMap?.isMyLocationEnabled = true
             val fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
             fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-                if (location != null) {
+                if (isAdded && location != null) {
                     val userLatLng = LatLng(location.latitude, location.longitude)
                     googleMap?.addPolyline(
                         PolylineOptions()
@@ -145,6 +145,7 @@ class MiCitaFragmento : Fragment(), OnMapReadyCallback {
 
         // Permitir al usuario seleccionar la ubicación tocando el mapa
         googleMap?.setOnMapClickListener { latLng ->
+            if (!isAdded) return@setOnMapClickListener
             marker?.remove()
             marker = googleMap?.addMarker(MarkerOptions().position(latLng).title("Nueva ubicación de la cita"))
             marker?.showInfoWindow()
@@ -167,7 +168,9 @@ class MiCitaFragmento : Fragment(), OnMapReadyCallback {
                 tvProv?.text = "Prov: -"
                 tvDist?.text = "Dist: -"
             }
-            Snackbar.make(requireView(), "Ubicación de la cita actualizada", Snackbar.LENGTH_SHORT).show()
+            if (isAdded) {
+                Snackbar.make(requireView(), "Ubicación de la cita actualizada", Snackbar.LENGTH_SHORT).show()
+            }
         }
     }
 
