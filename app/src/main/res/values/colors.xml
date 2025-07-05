@@ -12,4 +12,5 @@
     <color name="drawer_menu_bg">#FFFFFF</color>
     <color name="verde_claro">#A5D6A7</color>
     <color name="purple_500">#6200EE</color>
+    <color name="drawer_item_background">@android:color/transparent</color>
 </resources>

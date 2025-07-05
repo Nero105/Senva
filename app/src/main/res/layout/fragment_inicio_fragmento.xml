@@ -8,7 +8,6 @@
     android:background="@color/white"
     >
 
-
     <LinearLayout
         android:id="@+id/LinearBotonessuperiores"
         android:layout_width="match_parent"
@@ -80,67 +79,172 @@
             />
     </LinearLayout>
 
-    <!--
+    <!-- Sección Campañas -->
     <LinearLayout
-        android:id="@+id/linearprincipal"
+        android:id="@+id/linearCampanas"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tvBienvenida"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPagerCampanas"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:padding="16dp"
+            android:clipToPadding="false"
+            android:clipChildren="false"
+            android:overScrollMode="never" />
+
+    </LinearLayout>
+
+    <!-- Sección Citas -->
+    <TextView
+        android:id="@+id/tvTituloCitas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Citas"
+        android:textColor="#4CAF1C"
+        android:textStyle="bold"
+        android:textSize="22sp"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="16dp"
+        />
+
+    <include layout="@layout/item_cita" />
+
+    <TextView
+        android:id="@+id/tvTituloFechas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fechas Programadas"
+        android:textColor="#388e3c"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:fontFamily="sans-serif"
+        android:layout_marginTop="18dp"
+        android:layout_marginStart="16dp"
+        />
+
+    <LinearLayout
+        android:id="@+id/layoutCalendario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#fff"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:elevation="2dp"
+        android:padding="12dp"
+        android:clipToPadding="false"
+        android:clipChildren="false"
+        >
+        <!-- Encabezado mes y flechas -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Bienvenido"
-            android:textAlignment="center"
-            android:textStyle="bold"
-            android:layout_marginBottom="15dp"
-            android:textSize="30sp"
-            />
-
-        <LinearLayout
-            android:id="@+id/lineardatos"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
             <TextView
-                android:id="@+id/tvtextocorreo"
-                android:layout_width="wrap_content"
+                android:id="@+id/tvMesAnio"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:text="Correo: "
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvextracorreo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tvcerrarsesion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:textAlignment="center"
-                android:textColor="#EF0E0E"
+                android:layout_weight="1"
+                android:text="March 2021"
+                android:textColor="#222"
                 android:textStyle="bold"
-                android:text="Cerrar Sesion" />
+                android:textSize="20sp"
+                android:fontFamily="sans-serif"/>
+
+            <Button
+                android:id="@+id/btnPrev"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:backgroundTint="#caffd6"
+                android:text="<"
+                android:textColor="#388e3c"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_marginEnd="4dp"
+                android:background="@drawable/rounder_backgroundsietedaa"/>
+            <Button
+                android:id="@+id/btnNext"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:backgroundTint="#caffd6"
+                android:text=">"
+                android:textColor="#388e3c"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:background="@drawable/rounder_backgroundsietedaa"/>
         </LinearLayout>
 
-    </LinearLayout> -->
+        <!-- Tabla de calendario -->
+        <TableLayout
+            android:id="@+id/tableCalendar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="*"
+            android:layout_marginTop="8dp"
+            android:background="#fff">
+
+            <TableRow>
+                <TextView android:text="Mo" style="@style/CalendarDayHeader" />
+                <TextView android:text="Tu" style="@style/CalendarDayHeader" />
+                <TextView android:text="We" style="@style/CalendarDayHeader" />
+                <TextView android:text="Th" style="@style/CalendarDayHeader" />
+                <TextView android:text="Fr" style="@style/CalendarDayHeader" />
+                <TextView android:text="Sa" style="@style/CalendarDayHeader" />
+                <TextView android:text="Su" style="@style/CalendarDayHeader" />
+            </TableRow>
+            <TableRow>
+                <TextView android:text="1" style="@style/CalendarDay" />
+                <TextView android:text="2" style="@style/CalendarDaySelected" />
+                <TextView android:text="3" style="@style/CalendarDaySelected" />
+                <TextView android:text="4" style="@style/CalendarDaySelected" />
+                <TextView android:text="5" style="@style/CalendarDaySelected" />
+                <TextView android:text="6" style="@style/CalendarDay" />
+                <TextView android:text="7" style="@style/CalendarDay" />
+            </TableRow>
+            <TableRow>
+                <TextView android:text="8" style="@style/CalendarDay" />
+                <TextView android:text="9" style="@style/CalendarDay" />
+                <TextView android:text="10" style="@style/CalendarDay" />
+                <TextView android:text="11" style="@style/CalendarDay" />
+                <TextView android:text="12" style="@style/CalendarDay" />
+                <TextView android:text="13" style="@style/CalendarDay" />
+                <TextView android:text="14" style="@style/CalendarDay" />
+            </TableRow>
+            <TableRow>
+                <TextView android:text="15" style="@style/CalendarDay" />
+                <TextView android:text="16" style="@style/CalendarDay" />
+                <TextView android:text="17" style="@style/CalendarDay" />
+                <TextView android:text="18" style="@style/CalendarDay" />
+                <TextView android:text="19" style="@style/CalendarDay" />
+                <TextView android:text="20" style="@style/CalendarDay" />
+                <TextView android:text="21" style="@style/CalendarDay" />
+            </TableRow>
+            <TableRow>
+                <TextView android:text="22" style="@style/CalendarDay" />
+                <TextView android:text="23" style="@style/CalendarDay" />
+                <TextView android:text="24" style="@style/CalendarDay" />
+                <TextView android:text="25" style="@style/CalendarDay" />
+                <TextView android:text="26" style="@style/CalendarDay" />
+                <TextView android:text="27" style="@style/CalendarDay" />
+                <TextView android:text="28" style="@style/CalendarDay" />
+            </TableRow>
+            <TableRow>
+                <TextView android:text="29" style="@style/CalendarDay" />
+                <TextView android:text="30" style="@style/CalendarDay" />
+                <TextView android:text="31" style="@style/CalendarDay" />
+                <TextView android:text="" style="@style/CalendarDay" />
+                <TextView android:text="" style="@style/CalendarDay" />
+                <TextView android:text="" style="@style/CalendarDay" />
+                <TextView android:text="" style="@style/CalendarDay" />
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
+
 </LinearLayout>
