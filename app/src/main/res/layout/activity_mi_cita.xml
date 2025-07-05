@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:padding="0dp">
+
+    <!-- Barra superior personalizada -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:background="#8CB86D"
+        android:gravity="center_vertical">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_arrow_left"
+            android:contentDescription="Volver"
+            android:tint="@color/white"
+            />
+
+        <TextView
+            android:id="@+id/tvTituloDoctores"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Doctores"
+            android:textColor="#fff"
+            android:textStyle="bold"
+            android:textSize="26sp"
+            android:gravity="center"
+            android:fontFamily="sans-serif" />
+
+        <ImageView
+            android:id="@+id/imgAvatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/userdefault"
+            android:background="@drawable/circle_background"
+            android:scaleType="centerCrop"
+            android:contentDescription="Avatar usuario" />
+    </LinearLayout>
+
+    <!-- Barra de pasos -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
+
+        <!-- Paso 1 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/paso1" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ubi."
+                android:textColor="#7aa559"
+                android:textStyle="bold"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- Línea punteada -->
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="8dp"
+            android:src="@drawable/linea_punteada"
+            android:layout_gravity="center_vertical" />
+
+        <!-- Paso 2 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/paso2" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Esp."
+                android:textColor="#7aa559"
+                android:textStyle="bold"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="8dp"
+            android:src="@drawable/linea_punteada"
+            android:layout_gravity="center_vertical" />
+
+        <!-- Paso 3 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/paso3" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Drs."
+                android:textColor="#7aa559"
+                android:textStyle="bold"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="8dp"
+            android:src="@drawable/linea_punteada"
+            android:layout_gravity="center_vertical" />
+
+        <!-- Paso 4 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/paso4" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dato"
+                android:textColor="#7aa559"
+                android:textStyle="bold"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="8dp"
+            android:src="@drawable/linea_punteada"
+            android:layout_gravity="center_vertical" />
+
+        <!-- Paso 5 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/paso5" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Conf."
+                android:textColor="#7aa559"
+                android:textStyle="bold"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Título con fondo verde claro -->
+    <TextView
+        android:id="@+id/tvTituloSenva"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Elige tu Senva mas cercano"
+        android:textColor="#4C6B2A"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:paddingLeft="32dp"
+        android:paddingRight="32dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="12dp"
+        android:gravity="center"
+        android:backgroundTint="#c4dfb0"
+        android:backgroundTintMode="src_in"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/rounded_background_btn_cita" />
+
+    <!-- Mapa con esquinas redondeadas -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="260dp"
+        android:layout_height="220dp"
+        android:layout_gravity="center_horizontal"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="8dp"
+        android:layout_marginBottom="16dp">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/mapViewCita"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabCambiarUbicacion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="16dp"
+                android:src="@drawable/ic_ubi"
+                app:backgroundTint="#c4dfb0"
+                app:tint="#4C6B2A"
+                android:contentDescription="Cambiar ubicación"/>
+        </FrameLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Recuadro de dirección -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="16dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="2dp"
+        android:strokeColor="#8CB86D"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="0dp">
+            <TextView
+                android:id="@+id/tvNombreSenva"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Senva de San Juan de Lurigancho"
+                android:textColor="#4C6B2A"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:background="#eaf5e2"
+                android:padding="8dp"
+                android:gravity="center_vertical" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#8CB86D" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp">
+                <TextView
+                    android:id="@+id/tvDireccionLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dirección:"
+                    android:textColor="#4C6B2A"
+                    android:textStyle="bold"
+                    android:textSize="15sp" />
+                <TextView
+                    android:id="@+id/tvDpto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dpto: Lima"
+                    android:textColor="#222"
+                    android:textSize="15sp"
+                    android:layout_marginTop="2dp" />
+                <TextView
+                    android:id="@+id/tvProv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Prov: Lima"
+                    android:textColor="#222"
+                    android:textSize="15sp"
+                    android:layout_marginTop="2dp" />
+                <TextView
+                    android:id="@+id/tvDist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dist: San Juan de Lurigancho"
+                    android:textColor="#222"
+                    android:textSize="15sp"
+                    android:layout_marginTop="2dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Botón grande y redondeado -->
+    <Button
+        android:id="@+id/btnContinuar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Continuar"
+        android:textColor="#4C6B2A"
+        android:textStyle="bold"
+        android:textSize="22sp"
+        android:backgroundTint="#c4dfb0"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="24dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:gravity="center" />
+
+</LinearLayout> 

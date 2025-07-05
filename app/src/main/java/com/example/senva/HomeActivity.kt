@@ -54,9 +54,8 @@ class HomeActivity : AppCompatActivity() {
         navigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.itemFragment1 -> {
-                    supportFragmentManager.commit {
-                        replace<MiCitaFragmento>(R.id.frameContainer)
-                    }
+                    val intent = Intent(this, MiCitaActivity::class.java)
+                    startActivity(intent)
                     true
                 }
                 R.id.itemFragment2 -> {

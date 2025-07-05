@@ -38,6 +38,10 @@
         <activity android:name=".LoginActivity"/>
         <!-- Bienvenida -->
         <activity android:name=".HomeActivity"/>
+        <!-- Mi Cita Pantalla Completa -->
+        <activity android:name=".MiCitaActivity"/>
+        <!-- Especialidades -->
+        <activity android:name=".EspecialidadesActivity"/>
 
     </application>
 
