@@ -10,4 +10,6 @@
     <color name="drawer_item_icon">#000000</color> <!-- Icono negro -->
     <color name="drawer_item_text_selected">#000000</color> <!-- Texto seleccionado negro -->
     <color name="drawer_menu_bg">#FFFFFF</color>
+    <color name="verde_claro">#A5D6A7</color>
+    <color name="purple_500">#6200EE</color>
 </resources>

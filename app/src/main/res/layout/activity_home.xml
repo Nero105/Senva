@@ -51,6 +51,10 @@
         android:background="@color/drawer_menu_bg"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/drawer_menu"
-        app:itemTextColor="@color/drawer_item_text" />
+        app:itemTextColor="@color/black"
+        app:itemMinHeight="140dp"
+        app:itemTextAppearance="@style/DrawerMenuItemText"
+        app:itemVerticalPadding="24dp"
+        app:itemIconSize="48dp" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

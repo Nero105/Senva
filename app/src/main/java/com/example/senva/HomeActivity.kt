@@ -32,7 +32,6 @@ import androidx.core.view.GravityCompat
 
 class HomeActivity : AppCompatActivity() {
 
-    private lateinit var tv_nombresaludo: TextView
     private lateinit var navigation: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,7 +46,7 @@ class HomeActivity : AppCompatActivity() {
         val headerView = navigationView.getHeaderView(0)
         val imageViewProfile = headerView.findViewById<ImageView>(R.id.imageViewProfile)
 
-        val textViewSaludo = headerView.findViewById<TextView>(R.id.textViewSaludo)
+        val textViewSaludo = headerView.findViewById<TextView>(R.id.textViewSaludo1)
 
         // Cargar el nombre del usuario dinámicamente (ejemplo: desde SharedPreferences o Firestore)
         val sharedPreferences = getSharedPreferences(LoginActivity.Global.preferencias_compartidas, MODE_PRIVATE)
@@ -127,6 +126,9 @@ class HomeActivity : AppCompatActivity() {
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.itemPerfil -> {
+                    supportFragmentManager.commit {
+                        replace<PerfilFragment>(R.id.frameContainer)
+                    }
                     drawerLayout.closeDrawer(GravityCompat.START)
                     true
                 }

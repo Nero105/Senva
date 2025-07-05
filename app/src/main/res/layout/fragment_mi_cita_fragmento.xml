@@ -1,14 +1,207 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MiCitaFragmento">
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:padding="0dp">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <!-- Header profesional con degradado y avatar -->
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="PrimerFragmento" />
+        android:layout_height="110dp">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:background="@drawable/bg_header_gradient" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp">
+            <ImageView
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:src="@drawable/usuario"
+                android:background="@drawable/circle_background"
+                android:scaleType="centerCrop"
+                android:layout_marginEnd="16dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ubicación de tu cita"
+                android:textStyle="bold"
+                android:textSize="24sp"
+                android:textColor="@color/white"/>
+        </LinearLayout>
+    </FrameLayout>
 
-</FrameLayout>
+    <!-- CardView del mapa -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:layout_margin="16dp"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="12dp">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/mapViewCita"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabCambiarUbicacion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="20dp"
+                android:src="@drawable/ic_ubi"
+                app:backgroundTint="@color/verde_claro"
+                app:tint="@color/white"
+                android:contentDescription="Cambiar ubicación"/>
+        </FrameLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Badge de cercanía -->
+    <TextView
+        android:id="@+id/tvUbicacionActual"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¡Estás cerca de tu cita!"
+        android:textColor="@color/white"
+        android:background="@drawable/badge_cercania"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="-8dp"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone"/>
+
+    <!-- CardView de dirección -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        app:cardCornerRadius="18dp"
+        app:cardElevation="8dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_ubi"
+                    android:tint="@color/verde_claro"/>
+                <TextView
+                    android:id="@+id/tvDireccionCita"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dirección de la cita:"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="17sp"
+                    android:layout_marginStart="8dp"/>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/verde_claro"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="8dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/ic_departamento"
+                        android:tint="@color/verde_claro"/>
+                    <TextView
+                        android:id="@+id/tvDpto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Dpto: Lima"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:layout_marginStart="6dp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="4dp">
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/ic_provincia"
+                        android:tint="@color/verde_claro"/>
+                    <TextView
+                        android:id="@+id/tvProv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Prov: Lima"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:layout_marginStart="6dp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="4dp">
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/ic_distrito"
+                        android:tint="@color/verde_claro"/>
+                    <TextView
+                        android:id="@+id/tvDist"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Dist: San Juan de Lurigancho"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:layout_marginStart="6dp"/>
+                </LinearLayout>
+            </LinearLayout>
+            <Button
+                android:id="@+id/btnAbrirEnMaps"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Abrir en Google Maps"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/verde_claro"
+                android:layout_marginTop="16dp"
+                android:drawableStart="@drawable/ic_maps"
+                android:drawablePadding="8dp"
+                app:cornerRadius="12dp"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>
