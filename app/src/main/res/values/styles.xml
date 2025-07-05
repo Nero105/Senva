@@ -15,6 +15,10 @@
         <item name="android:padding">16dp</item>
     </style>
 
+    <style name="DrawerMenuItemBackground">
+        <item name="android:background">@drawable/drawer_item_background</item>
+    </style>
+
     <style name="ShapeAppearanceOverlay.Circle" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>

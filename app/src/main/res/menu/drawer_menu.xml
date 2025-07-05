@@ -2,22 +2,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/itemPerfil"
-        android:icon="@drawable/ic_perfil2"
+        android:icon="@drawable/ic_perfil_selector"
         android:title="Perfil" />
     <item
         android:id="@+id/itemFamilia"
-        android:icon="@drawable/ic_familia"
+        android:icon="@drawable/ic_familia_selector"
         android:title="Familia" />
     <item
         android:id="@+id/itemHistoriaClinica"
-        android:icon="@drawable/ic_historia_clinica"
+        android:icon="@drawable/ic_hc_selector"
         android:title="Historia clínica" />
     <item
         android:id="@+id/itemConfiguracionRapida"
-        android:icon="@drawable/ic_configuracion_rapida"
+        android:icon="@drawable/ic_config_selector"
         android:title="Configuración rápida" />
     <item
         android:id="@+id/itemCerrarSesion"
-        android:icon="@drawable/ic_cerrar_sesion"
+        android:icon="@drawable/ic_cerrar_sesion_selector"
         android:title="Cerrar sesión" />
 </menu>

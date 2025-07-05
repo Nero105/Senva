@@ -42,6 +42,7 @@
         app:itemMinHeight="140dp"
         app:itemTextAppearance="@style/DrawerMenuItemText"
         app:itemVerticalPadding="24dp"
-        app:itemIconSize="48dp" />
+        app:itemIconSize="48dp"
+        app:itemBackground="@drawable/drawer_item_background" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

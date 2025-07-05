@@ -74,6 +74,22 @@ class HomeActivity : AppCompatActivity() {
                 else -> false
             }
         }
+
+        val drawerLayout = findViewById<androidx.drawerlayout.widget.DrawerLayout>(R.id.drawer_layout)
+        val navigationView = findViewById<com.google.android.material.navigation.NavigationView>(R.id.navigation_view)
+        navigationView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.itemCerrarSesion -> {
+                    borrar_sesion()
+                    val intent = Intent(this, LoginActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                    finish()
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun borrar_sesion() {
