@@ -78,7 +78,40 @@
             android:textSize="17sp"
             android:textColor="@color/black"
             />
+
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearCampanas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPagerCampanas"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:padding="16dp"
+            android:clipToPadding="false"
+            android:clipChildren="false"
+            android:overScrollMode="never" />
+
+    </LinearLayout>
+
+    <!-- Sección Citas -->
+    <TextView
+        android:id="@+id/tvTituloCitas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Citas"
+        android:textColor="#4CAF1C"
+        android:textStyle="bold"
+        android:textSize="22sp"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="16dp"
+        />
+
+    <include layout="@layout/item_cita" />
 
     <!--
     <LinearLayout

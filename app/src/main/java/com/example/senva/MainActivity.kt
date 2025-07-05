@@ -186,7 +186,4 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
     }
-
-
-
 }

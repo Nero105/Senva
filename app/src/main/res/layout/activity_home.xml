@@ -21,8 +21,11 @@
         android:layout_height="wrap_content"
         app:menu="@menu/navigation_menu"
         android:layout_gravity="bottom"
-        android:background="@color/white"
+        android:background="@drawable/rounder_backgroundnavcolor"
         app:itemTextColor="@color/black"
-        />
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        >
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

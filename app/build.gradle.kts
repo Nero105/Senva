@@ -79,4 +79,5 @@ dependencies {
     implementation("com.google.firebase:firebase-auth-ktx")
     // Dependencia Fragments:
     implementation("androidx.fragment:fragment-ktx:1.8.8")
+    implementation("com.google.android.material:material:1.11.0")
 }
