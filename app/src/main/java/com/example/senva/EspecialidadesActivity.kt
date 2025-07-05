@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.content.Intent
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 
 class EspecialidadesActivity : AppCompatActivity() {
     private lateinit var databaseHelper: DatabaseHelper

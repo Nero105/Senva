@@ -46,6 +46,8 @@
         <activity android:name=".HistorialCitasActivity"/>
         <!-- Lista de Doctores -->
         <activity android:name=".ListaDoctoresActivity"/>
+        <!-- Reservar Cita -->
+        <activity android:name=".ReservarCitaActivity"/>
 
     </application>
 
