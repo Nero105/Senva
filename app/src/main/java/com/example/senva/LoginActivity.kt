@@ -238,7 +238,10 @@ class LoginActivity : AppCompatActivity() {
                                         val documento = result.documents[0]
                                         val primerNombre = documento.getString("primeronombre") ?: ""
 
-                                        guardar_sesion(correo)
+                                        val guardarSesion = getSharedPreferences(Global.preferencias_compartidas, MODE_PRIVATE).edit()
+                                        guardarSesion.putString("Nombre", primerNombre)
+                                        guardarSesion.putString("Correo", correo)
+                                        guardarSesion.apply()
 
                                         val intent = Intent(this, HomeActivity::class.java)
                                         intent.putExtra("Nombre", primerNombre)
@@ -273,11 +276,27 @@ class LoginActivity : AppCompatActivity() {
                     if (user != null && user.isEmailVerified) {
                         val correo = user.email.toString()
 
-                        guardar_sesion(user.email.toString())
-                        val intent = Intent(this, HomeActivity::class.java)
-                        intent.putExtra("Correo", user.email)
-                        startActivity(intent)
-                        finish()
+                        val firestore = com.google.firebase.firestore.FirebaseFirestore.getInstance()
+                        firestore.collection("usuarios")
+                            .whereEqualTo("correo", correo)
+                            .get()
+                            .addOnSuccessListener { result ->
+                                if (!result.isEmpty) {
+                                    val documento = result.documents[0]
+                                    val primerNombre = documento.getString("primeronombre") ?: ""
+                                    val guardarSesion = getSharedPreferences(Global.preferencias_compartidas, MODE_PRIVATE).edit()
+                                    guardarSesion.putString("Nombre", primerNombre)
+                                    guardarSesion.putString("Correo", correo)
+                                    guardarSesion.apply()
+
+                                    val intent = Intent(this, HomeActivity::class.java)
+                                    intent.putExtra("Correo", user.email)
+                                    startActivity(intent)
+                                    finish()
+                                } else {
+                                    Toast.makeText(this, "No se encontró información del usuario", Toast.LENGTH_SHORT).show()
+                                }
+                            }
                     } else {
                         FirebaseAuth.getInstance().signOut()
                         Toast.makeText(this, "Verifica tu correo antes de iniciar sesión", Toast.LENGTH_LONG).show()

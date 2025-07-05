@@ -3,17 +3,13 @@
     <item
         android:id="@+id/itemFragment1"
         android:icon="@drawable/ic_calender"
-        android:title="Mi cita"
-        />
+        android:title="Mi cita" />
     <item
         android:id="@+id/itemFragment2"
         android:icon="@drawable/home"
-        android:title="Inicio"
-        />
-
+        android:title="Inicio" />
     <item
         android:id="@+id/itemFragment3"
         android:icon="@drawable/diagnostic"
-        android:title="Diagnostico"
-        />
+        android:title="Diagnóstico" />
 </menu>

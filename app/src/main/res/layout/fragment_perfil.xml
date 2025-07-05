@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:elevation="4dp"
+            android:radius="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp"
+                android:gravity="center_horizontal">
+
+                <!-- Avatar -->
+                <FrameLayout
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="16dp">
+                    <ImageView
+                        android:id="@+id/imgPerfilAvatar"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/ic_perfil"
+                        android:scaleType="centerCrop"
+                        android:background="@drawable/circle_background"
+                        android:contentDescription="Foto de perfil" />
+                    <ImageView
+                        android:id="@+id/btnCambiarAvatar"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_camera"
+                        android:background="@drawable/circle_background"
+                        android:layout_gravity="bottom|end"
+                        android:layout_margin="4dp"
+                        android:padding="4dp"
+                        android:contentDescription="Cambiar foto" />
+                </FrameLayout>
+
+                <!-- Nombres y apellidos -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Nombres y apellidos"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"/>
+                <EditText
+                    android:id="@+id/etPerfilNombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Ingrese sus nombres y apellidos"
+                    android:inputType="textPersonName"
+                    android:enabled="false"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black"
+                    android:background="@android:color/transparent"
+                    android:layout_marginBottom="12dp"/>
+
+                <!-- Correo -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Correo electrónico"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"/>
+                <EditText
+                    android:id="@+id/etPerfilCorreo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Ingrese su correo"
+                    android:inputType="textEmailAddress"
+                    android:enabled="false"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black"
+                    android:background="@android:color/transparent"
+                    android:layout_marginBottom="12dp"/>
+
+                <!-- DNI -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="DNI o documento"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"/>
+                <EditText
+                    android:id="@+id/etPerfilDni"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Ingrese su DNI o documento"
+                    android:inputType="text"
+                    android:enabled="false"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black"
+                    android:background="@android:color/transparent"
+                    android:layout_marginBottom="12dp"/>
+
+                <!-- Celular -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Número de celular"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"/>
+                <EditText
+                    android:id="@+id/etPerfilCelular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Ingrese su número de celular"
+                    android:inputType="phone"
+                    android:enabled="false"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black"
+                    android:background="@android:color/transparent"
+                    android:layout_marginBottom="16dp"/>
+
+                <!-- Botón Editar/Guardar -->
+                <Button
+                    android:id="@+id/btnEditarPerfil"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Editar datos"
+                    android:backgroundTint="@color/purple_500"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="8dp"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Sección cambio de contraseña -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/layoutPasswordSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="4dp"
+            android:radius="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cambiar contraseña"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="12dp"/>
+
+                <EditText
+                    android:id="@+id/etPasswordActual"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Contraseña actual"
+                    android:inputType="textPassword"
+                    android:layout_marginBottom="8dp"/>
+                <EditText
+                    android:id="@+id/etPasswordNueva"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nueva contraseña"
+                    android:inputType="textPassword"
+                    android:layout_marginBottom="8dp"/>
+                <EditText
+                    android:id="@+id/etPasswordConfirmar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Confirmar nueva contraseña"
+                    android:inputType="textPassword"
+                    android:layout_marginBottom="8dp"/>
+
+                <Button
+                    android:id="@+id/btnActualizarPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Actualizar contraseña"
+                    android:backgroundTint="@color/purple_500"
+                    android:textColor="@color/white"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+</ScrollView> 

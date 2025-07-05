@@ -4,4 +4,12 @@
     <color name="white">#FFFFFFFF</color>
     <color name="colorPrimary">#F25ED2</color>
     <color name="gris">#F2F2F2</color>
+    <!-- Colores para el menú lateral -->
+    <color name="drawer_item_selected_bg">#7aa559</color> <!-- Verde para fondo seleccionado/presionado -->
+    <!-- <color name="drawer_item_text">#000000</color>  Eliminado para evitar duplicidad -->
+    <color name="drawer_item_icon">#000000</color> <!-- Icono negro -->
+    <color name="drawer_item_text_selected">#000000</color> <!-- Texto seleccionado negro -->
+    <color name="drawer_menu_bg">#FFFFFF</color>
+    <color name="verde_claro">#A5D6A7</color>
+    <color name="purple_500">#6200EE</color>
 </resources>
