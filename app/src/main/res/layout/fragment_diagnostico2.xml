@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <!-- Barra superior -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/verde_claro">
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="8dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_arrow_back" />
+        <TextView
+            android:id="@+id/tvTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Diagnóstico"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_centerInParent="true"
+            android:textColor="@color/black" />
+        <ImageView
+            android:id="@+id/ivPerfil"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_perfil2"
+            android:background="@android:color/transparent" />
+    </RelativeLayout>
+
+    <!-- Doctor centrado -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:padding="16dp">
+        <TextView
+            android:id="@+id/tvNombreDoctor2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DRA. RAMÍREZ"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/tvEspecialidad2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cardiología"
+            android:textSize="16sp"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/tvFechaDoctor2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="30/06/2025"
+            android:textSize="14sp"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+    <!-- Listado de recetas -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_recetas"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="8dp" />
+
+</LinearLayout> 

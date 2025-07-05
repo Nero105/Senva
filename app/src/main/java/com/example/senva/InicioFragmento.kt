@@ -19,7 +19,7 @@ class InicioFragmento : Fragment() {
 
     private lateinit var tvNombreSaludo: TextView
     private lateinit var viewPager: ViewPager2
-    private lateinit var btnDrawerUser: ImageButton
+    // private lateinit var btnDrawerUser: ImageButton
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,7 +28,7 @@ class InicioFragmento : Fragment() {
         val view = inflater.inflate(R.layout.fragment_inicio_fragmento, container, false)
         tvNombreSaludo = view.findViewById(R.id.tvnombresaludo)
         viewPager = view.findViewById(R.id.viewPagerCampanas)
-        btnDrawerUser = view.findViewById(R.id.btnDrawerUser)
+        // btnDrawerUser = view.findViewById(R.id.btnDrawerUser)
 
         cargarFotoUsuario()
         obtenerNombreDesdeFirestore()
@@ -62,23 +62,23 @@ class InicioFragmento : Fragment() {
         viewPager.adapter = adapter
 
         // Configurar botón de historial
-        val btnVerHistorial = view.findViewById<Button>(R.id.btnVerHistorial)
-        btnVerHistorial.setOnClickListener {
-            val intent = Intent(requireContext(), HistorialCitasActivity::class.java)
-            startActivity(intent)
-        }
+        // val btnVerHistorial = view.findViewById<Button>(R.id.btnVerHistorial)
+        // btnVerHistorial.setOnClickListener {
+        //     val intent = Intent(requireContext(), HistorialCitasActivity::class.java)
+        //     startActivity(intent)
+        // }
     }
 
     private fun cargarFotoUsuario() {
         val sharedPreferences = requireActivity().getSharedPreferences(Global.preferencias_compartidas, AppCompatActivity.MODE_PRIVATE)
         val fotoPerfil = sharedPreferences.getString("FotoPerfil", null)
         if (!fotoPerfil.isNullOrEmpty()) {
-            Glide.with(this)
-                .load(fotoPerfil)
-                .placeholder(R.drawable.usuario)
-                .into(btnDrawerUser)
+            // Glide.with(this)
+            //     .load(fotoPerfil)
+            //     .placeholder(R.drawable.usuario)
+            //     .into(btnDrawerUser)
         } else {
-            btnDrawerUser.setImageResource(R.drawable.usuario)
+            // btnDrawerUser.setImageResource(R.drawable.usuario)
         }
     }
 

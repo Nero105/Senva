@@ -14,6 +14,7 @@ import androidx.fragment.app.replace
 import com.example.senva.LoginActivity.Global
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
+import androidx.fragment.app.Fragment
 
 class HomeActivity : AppCompatActivity() {
 
@@ -66,7 +67,7 @@ class HomeActivity : AppCompatActivity() {
                 }
                 R.id.itemFragment3 -> {
                     supportFragmentManager.commit {
-                        replace<DiagnosticoFragment>(R.id.frameContainer)
+                        replace<DiagnosticoFragment1>(R.id.frameContainer)
                     }
                     true
                 }
@@ -88,6 +89,24 @@ class HomeActivity : AppCompatActivity() {
                 }
                 else -> false
             }
+        }
+    }
+
+    fun navigateToDiagnostico2(doctor: com.example.senva.model.Doctor) {
+        // Aquí se debe implementar la navegación a DiagnosticoFragment2 pasando el doctor
+        // Por ahora, solo muestra un fragmento vacío como placeholder
+        supportFragmentManager.commit {
+            replace(R.id.frameContainer, DiagnosticoFragment2.newInstance(doctor))
+            addToBackStack(null)
+        }
+    }
+
+    fun navigateToDiagnostico3(doctor: com.example.senva.model.Doctor, receta: com.example.senva.model.Receta) {
+        // Aquí se debe implementar la navegación a DiagnosticoFragment3 pasando el doctor y la receta
+        // Por ahora, solo muestra un fragmento vacío como placeholder
+        supportFragmentManager.commit {
+            replace(R.id.frameContainer, DiagnosticoFragment3.newInstance(doctor, receta))
+            addToBackStack(null)
         }
     }
 

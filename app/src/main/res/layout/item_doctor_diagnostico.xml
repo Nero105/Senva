@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/rounded_backgroundgris"
+    android:padding="12dp"
+    android:layout_marginBottom="8dp">
+
+    <ImageView
+        android:id="@+id/ivDoctor"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/doctoruno"
+        android:scaleType="centerCrop"
+        android:background="@drawable/circle_background" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_marginStart="12dp">
+
+        <TextView
+            android:id="@+id/tvNombreDoctor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DRA. RAMÍREZ"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/tvEspecialidad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cardiología"
+            android:textSize="14sp"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/tvFechaDoctor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="30/06/2025"
+            android:textSize="12sp"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/btnFlecha"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/ic_arrow_right"
+        android:background="@android:color/transparent"
+        android:layout_gravity="center_vertical" />
+
+</LinearLayout> 

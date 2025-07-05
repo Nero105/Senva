@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/rounded_backgroundgris"
+    android:padding="12dp"
+    android:layout_marginBottom="8dp"
+    android:gravity="center_vertical">
+
+    <ImageView
+        android:id="@+id/ivIconoReceta"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_historia_clinica"
+        android:background="@drawable/circle_background"
+        android:scaleType="centerCrop" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_marginStart="12dp">
+        <TextView
+            android:id="@+id/tvCodigoReceta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Receta - 001"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/tvFechaReceta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="30/06/2025"
+            android:textSize="14sp"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/btnVerReceta"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:src="@drawable/ic_eye"
+        android:background="@android:color/transparent"
+        android:layout_marginEnd="4dp" />
+    <TextView
+        android:id="@+id/tvVerReceta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ver"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+</LinearLayout> 
