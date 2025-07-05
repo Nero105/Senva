@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/home"
-            android:title="Inicio" />
-        <item
-            android:id="@+id/nav_profile"
-            android:icon="@drawable/userdefault"
-            android:title="Perfil" />
-        <item
-            android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_calender"
-            android:title="Configuración" />
-    </group>
-</menu> 
+    <item
+        android:id="@+id/itemPerfil"
+        android:icon="@drawable/ic_perfil2"
+        android:title="Perfil" />
+    <item
+        android:id="@+id/itemFamilia"
+        android:icon="@drawable/ic_familia"
+        android:title="Familia" />
+    <item
+        android:id="@+id/itemHistoriaClinica"
+        android:icon="@drawable/ic_historia_clinica"
+        android:title="Historia clínica" />
+    <item
+        android:id="@+id/itemConfiguracionRapida"
+        android:icon="@drawable/ic_configuracion_rapida"
+        android:title="Configuración rápida" />
+    <item
+        android:id="@+id/itemCerrarSesion"
+        android:icon="@drawable/ic_cerrar_sesion"
+        android:title="Cerrar sesión" />
+</menu>

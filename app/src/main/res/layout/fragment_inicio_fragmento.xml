@@ -11,20 +11,36 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Todo el contenido original aquí -->
+
         <LinearLayout
             android:id="@+id/LinearBotonessuperiores"
             android:layout_width="match_parent"
             android:layout_height="65dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageButton
+                android:id="@+id/btnDrawerUser"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/circle_background"
+                android:scaleType="centerCrop"
+                android:src="@drawable/usuario"
+                android:contentDescription="Imagen de usuario"
+                android:padding="0dp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
 
             <ImageButton
                 android:id="@+id/ibtnoti"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="350dp"
-                android:layout_gravity="center"
-                android:layout_weight="1"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="8dp"
                 android:backgroundTint="@android:color/transparent"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"

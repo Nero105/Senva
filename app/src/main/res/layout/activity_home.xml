@@ -20,26 +20,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <ImageButton
-            android:id="@+id/btnDrawerUser"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_gravity="start|top"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/circle_background"
-            android:scaleType="centerCrop"
-            android:src="@drawable/usuario"
-            android:contentDescription="Imagen de usuario"
-            android:padding="0dp" />
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:menu="@menu/navigation_menu"
         android:layout_gravity="bottom"
-        android:background="@color/white"
+        android:background="@drawable/rounder_backgroundnavcolor"
             app:itemTextColor="@color/black" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
